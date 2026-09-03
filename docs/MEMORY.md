@@ -29,6 +29,16 @@
 - New sections: Header(brick bar), Hero(image), Welcome, TodaysBake(favourites w/ photos + sold-out + add-to-order), ForEveryMoment(4 sage cards), Testimonial, CtaBlock(green), Footer(brick). Removed FeatureBar/Story/BreadMark.
 - WebMCP tools UNCHANGED — pure UI reskin. Build passes.
 
+## Critique + fixes (impeccable /critique, baseline 24/32 Good)
+- Ran /critique (dual-agent): detector clean; design 24/32 (heuristics 7,10 n/a). Snapshot in `.impeccable/critique/`.
+- Applied plan (clarify → harden → quick-wins → document → polish):
+  - CLARIFY: Hero + CtaBlock rewritten in Odette's first-person voice (killed agency-voice hero); ForEveryMoment eyebrow "Untuk setiap momen" → "For every moment"; currency `$` → `€` (ProductCard + OrderConfirmation); Hero secondary CTA no longer dead-ends (now → #story).
+  - HARDEN: "Add to order" (instant irreversible, dup-order bug) → "Order this" opens a confirm DIALOG in TodaysBake (name [validated] + pickup + qty) before placeOrder; kills silent duplicates; fires same storefront:order event.
+  - QUICK WIN: "Anniversaries" moment card image croissant.jpg → walnut.jpg.
+  - DOCUMENT: docs/DESIGN.md regenerated from shipped brick/sage/cream code (was stale terracotta).
+- Detector clean after; build passes.
+- Deferred (out of chosen scope): mobile nav (hidden md:flex), sticky header, heading-color rule, lang attrs, P3 thesis-visibility redesign.
+
 ## Contrast design (decided)
 - Primary demo contrast is now the **two-door**: the SAME deployed site accessed by a blind/screenshot (vision) agent vs. the WebMCP agent. Proves "the agent only succeeds because the site cooperated." Aggregator page demoted to a supporting beat.
 - To keep it HONEST (not rigged), the app needs a **true failure surface** (PRD MUST #6): a live sold-out state that's not trivially readable off the page, a computed occasion recommendation (not just printed), and no plainly-clickable checkout form. Built in Phases 3–4; captured in Phase 5.

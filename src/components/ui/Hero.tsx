@@ -2,23 +2,25 @@ export default function Hero() {
   return (
     <section id="top" className="bg-paper">
       <div className="mx-auto max-w-3xl px-6 pt-16 pb-10 text-center">
-        <h1 className="text-4xl md:text-5xl">A taste that connects every generation</h1>
+        <p className="eyebrow mb-4">Chez Odette · since 1974</p>
+        <h1 className="text-4xl md:text-5xl">Come in — the bread&rsquo;s still warm</h1>
         <p className="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed text-body">
-          From the family loaf to something for a special occasion, Chez Odette
-          brings warmth to every bite — the way it has since 1974.
+          I&rsquo;m Odette. I&rsquo;ve baked here since 1974, from a starter older than the
+          building. Order straight from me — it comes from my hands to yours, with no
+          middleman taking a cut.
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <a
             href="#bake"
             className="rounded-btn bg-brick px-6 py-3 text-white hover:bg-brick-ink transition-colors"
           >
-            See the menu
+            See today&rsquo;s bake
           </a>
           <a
-            href="#moments"
+            href="#story"
             className="rounded-btn border border-brick/40 px-6 py-3 text-brick hover:border-brick transition-colors"
           >
-            Order for an event
+            Odette&rsquo;s story
           </a>
         </div>
       </div>

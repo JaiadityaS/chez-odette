@@ -2,7 +2,7 @@ const MOMENTS = [
   {
     title: "Anniversaries & celebrations",
     text: "The walnut levain and other weekend bakes for the days that matter.",
-    image: "/images/croissant.jpg",
+    image: "/images/walnut.jpg",
   },
   {
     title: "The long table",
@@ -26,7 +26,7 @@ export default function ForEveryMoment() {
     <section id="moments" className="bg-surface">
       <div className="mx-auto max-w-6xl px-6 py-16">
         <div className="mb-10">
-          <p className="eyebrow mb-3">Untuk setiap momen</p>
+          <p className="eyebrow mb-3">For every moment</p>
           <h2 className="text-3xl md:text-4xl">Chez Odette, for every moment</h2>
         </div>
 

@@ -44,7 +44,7 @@ export default function OrderConfirmation() {
         <span>#{order.orderId}</span>
         {order.keptFromAggregator > 0 && (
           <span className="font-medium text-sage-deep">
-            ${order.keptFromAggregator.toFixed(2)} kept from the aggregators
+            €{order.keptFromAggregator.toFixed(2)} kept from the aggregators
           </span>
         )}
       </div>

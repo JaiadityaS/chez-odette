@@ -35,7 +35,9 @@ export default function ProductCard({
       <div className="flex flex-1 flex-col p-4">
         <div className="flex items-baseline justify-between gap-3">
           <h3 className="text-ink text-xl">{name}</h3>
-          <span className="font-display text-[15px] text-brick whitespace-nowrap">${price}</span>
+          <span className="font-display text-[15px] text-brick whitespace-nowrap">
+            €{Number.isInteger(price) ? price : price.toFixed(2)}
+          </span>
         </div>
         {tags && tags.length > 0 && (
           <div className="mt-1 text-xs uppercase tracking-[0.08em] text-faint">
@@ -51,7 +53,7 @@ export default function ProductCard({
             onClick={() => onOrder?.(product)}
             className="mt-4 rounded-btn bg-brick px-4 py-2 text-sm text-white hover:bg-brick-ink transition-colors"
           >
-            Add to order
+            Order this
           </button>
         )}
       </div>
