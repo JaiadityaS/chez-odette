@@ -41,12 +41,14 @@
   - ASSUMPTION to verify live: tool result shape is `{ content: [{ type:'text', text }] }` and the global is `document.modelContext.registerTool`. Confirm/adjust after the ChatGPT in-app browser test.
   - **DEPLOYED:** https://chez-odette-tau.vercel.app/ (auto-deploys on push to main). Live tab title confirms our layout shipped.
   - ✅ Tool execute logic VERIFIED on live build via `?harness=1` → ping returned `{content:[{type:text,text:"pong from Chez Odette — the ovens are warm."}]}`. So the result-shape assumption holds for our own runtime.
-  - ⏳ REMAINING: real WebMCP agent handshake — open the URL in ChatGPT's in-app browser, ask agent to call `ping`. Only then is `document.modelContext.registerTool` confirmed. Do NOT build real tools (Phase 3+) as "verified" until this passes; UI (Phase 2) is independent and safe to build now.
+  - ✅ **VERIFIED with a real agent** in ChatGPT's in-app browser — `ping` discovered + called successfully. `document.modelContext.registerTool` + `{content:[{type:text}]}` result shape are CORRECT. Cleared to build real tools.
 - [x] **Phase 2 done (UI storefront):** built + verified locally (screenshots). globals.css has Chez Odette tokens (Tailwind v4 @theme). Components in `src/components/ui/`: Header, Hero (blush stripes), FeatureBar, Story, TodaysBake+ProductCard (sold-out state distinct), OrderConfirmation, Footer, BreadMark. `page.tsx` = framed cream panel. Renders on-brand (matches the reference).
   - ✅ UI-4 verified: clicking "Add to order" dispatches `storefront:order` → confirmation panel shows. Same event the WebMCP `place_order` tool will fire. Agent-action → human-UI proven.
   - NOTE: product/story copy is still PLACEHOLDER (from stubs) — real Odette content lands in Phase 3.
-- [ ] Next: Phase 3 — fill `src/lib/bakery.ts` + `voice.ts` with real Odette content (real menu, story, sold-out, COMPUTED recommendation) AND register the soul tools (get_todays_bake, the_story, recommend_for_occasion) in tools.ts. Then Phase 4 (transaction tools) → 5 (contrast) → 6 (polish) → 7 (ship).
-- [ ] Gate reminder: run the real ChatGPT-in-app-browser `ping` test before trusting Phase 3+ tools as agent-verified.
+- [x] **Phase 3 done (real content + soul tools):** `bakery.ts` has Odette's real 6-item menu (walnut levain genuinely sold out), real story, real placeOrder (computes `keptFromAggregator` ~30%). `voice.ts` `recommendForOccasion` is genuinely computed — occasion keywords → tags, guest count, nut-allergy, and a SOLD-OUT FALLBACK (won't recommend a gone loaf; says so, offers best available). Soul tools registered in `tools.ts`: `get_todays_bake`, `the_story`, `recommend_for_occasion` (+ ping). Build passes; page shows real content (verified via page text).
+  - Nice-to-have: re-verify get_todays_bake / recommend_for_occasion with a real agent in ChatGPT browser on the deployed site.
+- [ ] Next: Phase 4 — transaction tools (`check_availability`, `place_order` via `/api/orders`, `get_order_status`) + `join_regulars`. `place_order` must dispatch `storefront:order` so the confirmation shows in the UI (the human path already does this).
+- [ ] Then Phase 5 (aggregator page + blind-vision contrast capture) → 6 (polish) → 7 (ship).
 
 ## Open decisions for the maker
 1. Brand name "Miga" + tagline "Bread with a memory" — keep or change?

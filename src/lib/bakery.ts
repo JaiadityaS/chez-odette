@@ -1,8 +1,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// THE FROZEN SEAM (see docs/CONTRACT.md)
-// UI (You) imports these to render. Backend (Teammate) fills the real bodies.
-// The stub returns PLACEHOLDER data so the UI looks alive while both build.
-// Do NOT change the exported types/signatures without telling the other person.
+// THE FROZEN SEAM (see docs/CONTRACT.md) — now filled with real Odette content.
+// Types/signatures are frozen; bodies are real.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type Product = {
@@ -32,59 +30,135 @@ export type OrderConfirmation = {
   keptFromAggregator: number
 }
 
-// ── PLACEHOLDER DATA (Teammate: replace with Odette's real menu, story, stock) ──
-const PLACEHOLDER: Product[] = [
-  {
-    id: 'walnut-levain',
-    name: 'Walnut levain',
-    price: 9,
-    soldOut: true, // the live sold-out state that a blind/vision agent will misread
-    story: 'PLACEHOLDER — Odette only bakes this on weekends; walnuts go in while the dough is still warm.',
-    tags: ['anniversary', 'celebration'],
-    imageHint: 'dark crust loaf, walnuts',
-  },
+// ── Odette's real menu. One item (walnut levain) is genuinely sold out today —
+// this is the live-availability truth the WebMCP tools report reliably and a
+// screenshot agent tends to get wrong (see docs/PRD.md MUST #6). ──
+const PRODUCTS: Product[] = [
   {
     id: 'country-sourdough',
     name: 'Country sourdough',
     price: 8,
     soldOut: false,
-    story: 'PLACEHOLDER — the everyday loaf, from the starter older than the building.',
-    tags: ['everyday'],
-    imageHint: 'round golden sourdough',
+    story:
+      "My everyday loaf. The starter came from my mother's kitchen — it's older than this building. Proofed overnight so the crust sings when you cut it.",
+    tags: ['everyday', 'sharing'],
+    imageHint: 'round golden sourdough, floured top',
+  },
+  {
+    id: 'walnut-levain',
+    name: 'Walnut levain',
+    price: 9,
+    soldOut: true, // gone for today — the honest sold-out state
+    story:
+      "I only bake this on weekends. The walnuts go in while the dough is still warm, so they toast from the inside. My grandmother made it for her own anniversary.",
+    tags: ['anniversary', 'celebration', 'weekend'],
+    imageHint: 'dark crusted loaf studded with walnuts',
+  },
+  {
+    id: 'baguette-tradition',
+    name: 'Baguette de tradition',
+    price: 4,
+    soldOut: false,
+    story:
+      "Flour, water, salt, time — nothing else, by law and by love. Baked twice a day so there's always one still warm at the counter.",
+    tags: ['everyday', 'morning'],
+    imageHint: 'crisp golden baguette',
+  },
+  {
+    id: 'pain-de-campagne',
+    name: 'Pain de campagne',
+    price: 9,
+    soldOut: false,
+    story:
+      "A big country round with a little rye for depth. This is the loaf for a long table and a slow dinner — it keeps for days and toasts beautifully.",
+    tags: ['sharing', 'dinner', 'everyday'],
+    imageHint: 'large rustic round, scored cross',
+  },
+  {
+    id: 'seeded-rye',
+    name: 'Seeded rye',
+    price: 8,
+    soldOut: false,
+    story:
+      "Dense, dark and honest — sunflower and flax, a long ferment for that gentle sourness. My husband's favourite, so I never stop making it.",
+    tags: ['hearty', 'everyday'],
+    imageHint: 'dark seeded rye loaf',
+  },
+  {
+    id: 'butter-croissant',
+    name: 'Butter croissant',
+    price: 4.5,
+    soldOut: false,
+    story:
+      "Laminated by hand with proper French butter, folded the night before. Come at seven and you'll catch them before anyone else does.",
+    tags: ['morning', 'breakfast'],
+    imageHint: 'flaky golden croissant',
   },
 ]
 
+// In-memory order store (demo only — no DB, no real payments).
+const ORDERS = new Map<string, { orderId: string; status: string; summary: string }>()
+
 export function getTodaysBake(): Product[] {
-  return PLACEHOLDER // Teammate: return the real day's bake
+  return PRODUCTS
 }
 
 export function getStory(): string {
-  return 'PLACEHOLDER — Odette wakes at 4am. Her grandmother’s starter is older than the building.' // Teammate: the real story
+  return (
+    "I'm Odette. I've opened these shutters at four in the morning for longer than " +
+    "I care to admit. The starter I bake with is older than this building — my mother " +
+    "fed it, and hers before that. I don't make much, and I sell out most days, because " +
+    "I'd rather bake a little I'm proud of than a lot I'm not. When you buy a loaf here, " +
+    "it comes from my hands to yours — no shelf, no middleman, no stranger taking a cut."
+  )
 }
 
 export function checkAvailability(productId: string): AvailabilityResult {
-  const p = PLACEHOLDER.find((x) => x.id === productId)
-  if (!p) return { available: false, note: 'PLACEHOLDER — I don’t have that one.' }
+  const p = PRODUCTS.find((x) => x.id === productId)
+  if (!p) return { available: false, note: "I don't bake that one, I'm afraid." }
   return p.soldOut
-    ? { available: false, note: `PLACEHOLDER — the ${p.name.toLowerCase()} went by 9am, I’m sorry.` }
-    : { available: true, note: `PLACEHOLDER — yes, fresh ${p.name.toLowerCase()} today.` }
+    ? { available: false, note: `The ${p.name.toLowerCase()} is gone for today — come early tomorrow.` }
+    : { available: true, note: `Yes — fresh ${p.name.toLowerCase()} on the counter right now.` }
 }
 
-// Order handling — Teammate wires this to src/lib/orders.ts + /api/orders and
-// dispatches the 'storefront:order' event (see docs/CONTRACT.md).
 export function placeOrder(input: OrderInput): OrderConfirmation {
-  return {
-    orderId: 'PLACEHOLDER-0001',
-    status: 'confirmed',
-    summary: 'PLACEHOLDER — order confirmed. Teammate replaces with Odette’s voice.',
-    keptFromAggregator: 0,
-  }
+  const lines = input.items
+    .map((it) => {
+      const p = PRODUCTS.find((x) => x.id === it.id)
+      return p ? { name: p.name, qty: it.qty, price: p.price } : null
+    })
+    .filter((l): l is { name: string; qty: number; price: number } => l !== null)
+
+  const subtotal = lines.reduce((s, l) => s + l.price * l.qty, 0)
+  // What a marketplace would have skimmed (~30%) — the money Odette keeps.
+  const keptFromAggregator = Math.round(subtotal * 0.3 * 100) / 100
+  const orderId = 'ODT-' + Math.random().toString(36).slice(2, 7).toUpperCase()
+  const names = lines.map((l) => `${l.qty}× ${l.name}`).join(', ')
+  const how = input.fulfillment === 'delivery' ? 'delivery' : 'pickup'
+  const summary = names
+    ? `Merci, ${input.contact.name || 'friend'} — I've set aside your ${names} for ${how} ${input.when}. It'll be wrapped warm with your name on it.`
+    : `Merci — your order is in.`
+
+  ORDERS.set(orderId, { orderId, status: 'confirmed', summary })
+  return { orderId, status: 'confirmed', summary, keptFromAggregator }
 }
 
 export function getOrderStatus(orderId: string): { orderId: string; status: string; summary: string } {
-  return { orderId, status: 'confirmed', summary: 'PLACEHOLDER — ready for pickup.' }
+  return (
+    ORDERS.get(orderId) ?? {
+      orderId,
+      status: 'not_found',
+      summary: "I can't find that order — are you sure of the number?",
+    }
+  )
 }
 
-export function joinRegulars(contact: { name: string; phone?: string; email?: string }): { ok: boolean; message: string } {
-  return { ok: true, message: `PLACEHOLDER — welcome to the regulars, ${contact.name}.` }
+export function joinRegulars(contact: { name: string; phone?: string; email?: string }): {
+  ok: boolean
+  message: string
+} {
+  return {
+    ok: true,
+    message: `Welcome to the regulars, ${contact.name}. I'll let you know the day the walnut levain comes out — you'll hear it from me, not from an app.`,
+  }
 }

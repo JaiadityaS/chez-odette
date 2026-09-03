@@ -1,26 +1,62 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Odette's voice + the COMPUTED occasion recommendation (part of the honest
-// "true failure surface" — this reasoning is NOT printed on the page, so a
-// blind/vision agent can't get it; only the WebMCP tool can). See docs/CONTRACT.md.
-// Backend (Teammate) owns this file. UI (You) only imports recommendForOccasion.
+// Odette's voice + the COMPUTED occasion recommendation.
+// This reasoning is NOT printed anywhere on the page — it accounts for the
+// occasion, guest count, preferences AND live availability (it won't recommend
+// a sold-out loaf; it says so and offers the best available instead). A
+// screenshot agent can't reproduce this; only the WebMCP tool can. (PRD MUST #6)
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { getTodaysBake, type Product } from './bakery'
 
-export type Recommendation = { item: Product; inOdettesVoice: string }
+export type Recommendation = { item: Product; inRosasVoice: string }
 
-export function recommendForOccasion(input: { occasion: string; guests: number; prefs?: string }): Recommendation {
-  // PLACEHOLDER logic — Teammate: make this genuinely reason over tags/occasion/
-  // guests/prefs and speak in Odette's voice. Keep it computed, not a lookup of
-  // text that already appears on the page.
+export function recommendForOccasion(input: {
+  occasion: string
+  guests: number
+  prefs?: string
+}): Recommendation {
+  const occasion = input.occasion ?? ''
+  const guests = Number.isFinite(input.guests) ? input.guests : 1
+  const occ = occasion.toLowerCase()
+  const pref = (input.prefs ?? '').toLowerCase()
+
+  // Occasion → the tags Odette would reach for.
+  const wants: string[] = []
+  if (/anniversar|romantic|date|love/.test(occ)) wants.push('anniversary', 'celebration')
+  if (/celebrat|birthday|party|friends|gather/.test(occ)) wants.push('celebration', 'sharing')
+  if (/dinner|table|host|guest|supper/.test(occ)) wants.push('dinner', 'sharing')
+  if (/breakfast|morning|brunch/.test(occ)) wants.push('morning', 'breakfast')
+  if (/everyday|toast|sandwich|lunch|daily/.test(occ)) wants.push('everyday')
+  if (guests >= 6) wants.push('sharing', 'dinner')
+  if (wants.length === 0) wants.push('everyday')
+
+  const avoidNuts = /no nut|nut-free|nut free|allerg|without nut/.test(pref)
+
   const bake = getTodaysBake()
-  const match =
-    bake.find((p) => (p.tags ?? []).some((t) => input.occasion.toLowerCase().includes(t))) ??
-    bake.find((p) => !p.soldOut) ??
-    bake[0]
+  const candidates = bake.filter((p) => !(avoidNuts && (p.id === 'walnut-levain')))
+  const score = (p: Product) =>
+    (p.tags ?? []).reduce((s, t) => s + (wants.includes(t) ? 1 : 0), 0)
 
-  return {
-    item: match,
-    inOdettesVoice: `PLACEHOLDER — for ${input.occasion} with ${input.guests}, I’d send you home with the ${match.name.toLowerCase()}. ${match.story}`,
-  }
+  const ranked = [...candidates].sort((a, b) => score(b) - score(a))
+  const bestOverall = ranked[0]
+  const available = ranked.filter((p) => !p.soldOut)
+  const pick = available[0] ?? ranked[0]
+
+  const soldOutNote =
+    bestOverall && bestOverall.soldOut && bestOverall.id !== pick.id
+      ? `The ${bestOverall.name.toLowerCase()} would have been my first thought, but it's gone for today. `
+      : ''
+
+  const guestNote =
+    guests >= 6
+      ? ` For ${guests}, take two — this table won't leave crumbs.`
+      : guests > 1
+        ? ` One is plenty for ${guests}.`
+        : ''
+
+  const inRosasVoice =
+    `${soldOutNote}For ${occasion || 'today'}, I'd send you home with the ` +
+    `${pick.name.toLowerCase()}. ${pick.story}${guestNote}`
+
+  return { item: pick, inRosasVoice }
 }
