@@ -10,6 +10,9 @@ export default function Footer() {
         <p className="mt-5 font-display italic text-base text-white/90">
           Ordered by an agent? It still came straight to Odette.
         </p>
+        <p lang="fr" className="mt-4 font-display text-lg italic text-white/80">
+          À bientôt.
+        </p>
       </div>
     </footer>
   );

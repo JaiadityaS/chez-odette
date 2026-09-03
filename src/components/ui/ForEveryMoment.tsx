@@ -26,7 +26,9 @@ export default function ForEveryMoment() {
     <section id="moments" className="bg-surface">
       <div className="mx-auto max-w-6xl px-6 py-16">
         <div className="mb-10">
-          <p className="eyebrow mb-3">For every moment</p>
+          <p className="eyebrow mb-3">
+            <span lang="fr">Nos moments</span> <span className="en">· For every moment</span>
+          </p>
           <h2 className="text-3xl md:text-4xl">Chez Odette, for every moment</h2>
         </div>
 
@@ -34,7 +36,7 @@ export default function ForEveryMoment() {
           {MOMENTS.map((m) => (
             <div
               key={m.title}
-              className="flex flex-col overflow-hidden border border-line bg-sage"
+              className="lift flex flex-col overflow-hidden border border-line bg-sage"
               style={{ borderRadius: "var(--radius-card)" }}
             >
               <div className="aspect-[3/2] w-full overflow-hidden">

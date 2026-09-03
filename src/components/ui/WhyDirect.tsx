@@ -19,7 +19,8 @@ export default function WhyDirect() {
       <div className="mx-auto max-w-6xl px-6 py-16">
         <div className="mx-auto max-w-2xl text-center">
           <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-white/70">
-            Why order direct
+            <span lang="fr">Pourquoi commander en direct</span>
+            <span className="text-white/50"> · Why order direct</span>
           </p>
           <h2 className="text-3xl text-white md:text-4xl">When you buy here, it stays here</h2>
           <p className="mt-4 text-[17px] leading-relaxed text-white/85">
@@ -33,7 +34,7 @@ export default function WhyDirect() {
           {POINTS.map((p) => (
             <div
               key={p.value}
-              className="bg-surface p-6 text-center"
+              className="lift bg-surface p-6 text-center"
               style={{ borderRadius: "var(--radius-card)" }}
             >
               <div className="font-display text-3xl text-brick">{p.value}</div>

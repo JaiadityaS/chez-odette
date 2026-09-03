@@ -47,7 +47,9 @@ export default function TodaysBake() {
     <section id="bake" className="bg-paper">
       <div className="mx-auto max-w-6xl px-6 py-16">
         <div className="text-center">
-          <p className="eyebrow mb-3">Today&rsquo;s bake</p>
+          <p className="eyebrow mb-3">
+            <span lang="fr">Le pain du jour</span> <span className="en">· Today&rsquo;s bake</span>
+          </p>
           <h2 className="text-3xl md:text-4xl">Find your favourite</h2>
           <p className="mx-auto mt-3 max-w-md text-[16px] text-body">
             Baked in small batches this morning. When a loaf is gone, it&rsquo;s gone

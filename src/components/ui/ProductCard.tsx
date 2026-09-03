@@ -12,7 +12,7 @@ export default function ProductCard({
   const { name, price, soldOut, story, tags, image } = product;
   return (
     <div
-      className="flex flex-col overflow-hidden border border-line bg-surface"
+      className="lift flex flex-col overflow-hidden border border-line bg-surface"
       style={{ borderRadius: "var(--radius-card)", opacity: soldOut ? 0.78 : 1 }}
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-sage">
