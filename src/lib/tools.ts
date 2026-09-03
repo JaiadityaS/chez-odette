@@ -6,7 +6,15 @@
 // agent, not just data. See docs/PRD.md.
 
 import { type WebMCPTool, text } from './webmcp'
-import { getTodaysBake, getStory } from './bakery'
+import {
+  getTodaysBake,
+  getStory,
+  checkAvailability,
+  placeOrder,
+  getOrderStatus,
+  joinRegulars,
+  type OrderInput,
+} from './bakery'
 import { recommendForOccasion } from './voice'
 
 const pingTool: WebMCPTool = {
@@ -90,9 +98,133 @@ const recommendForOccasionTool: WebMCPTool = {
   },
 }
 
+const checkAvailabilityTool: WebMCPTool = {
+  name: 'check_availability',
+  description:
+    "Check whether a specific loaf is available at Chez Odette right now. Availability changes through the day and loaves sell out — this is the live truth, more reliable than reading the page. Pass a product id from get_todays_bake.",
+  inputSchema: {
+    type: 'object',
+    properties: {
+      productId: {
+        type: 'string',
+        description: 'The loaf id, e.g. "walnut-levain" (from get_todays_bake).',
+      },
+    },
+    required: ['productId'],
+    additionalProperties: false,
+  },
+  execute: async (input) => {
+    const { productId } = (input ?? {}) as { productId?: string }
+    return text(JSON.stringify(checkAvailability(productId ?? '')))
+  },
+}
+
+const placeOrderTool: WebMCPTool = {
+  name: 'place_order',
+  description:
+    "Place a direct order with Odette — no marketplace, no middleman, she keeps the full price. Provide items (id + qty from get_todays_bake), pickup or delivery, when, and the customer's name (phone/email optional). Set joinRegulars to add them to Odette's own list. Returns a confirmation and shows the order on Odette's counter.",
+  inputSchema: {
+    type: 'object',
+    properties: {
+      items: {
+        type: 'array',
+        description: 'The loaves to order.',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            qty: { type: 'number' },
+          },
+          required: ['id', 'qty'],
+          additionalProperties: false,
+        },
+      },
+      fulfillment: { type: 'string', enum: ['pickup', 'delivery'] },
+      when: { type: 'string', description: 'When they want it, e.g. "Saturday morning".' },
+      contact: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          phone: { type: 'string' },
+          email: { type: 'string' },
+        },
+        required: ['name'],
+        additionalProperties: false,
+      },
+      joinRegulars: {
+        type: 'boolean',
+        description: "Add the customer to Odette's own regulars list.",
+      },
+    },
+    required: ['items', 'fulfillment', 'when', 'contact'],
+    additionalProperties: false,
+  },
+  execute: async (input) => {
+    const order = (input ?? {}) as OrderInput
+    const confirmation = placeOrder(order)
+
+    // Show the order on Odette's counter (the human UI) — the same event the
+    // human "Add to order" button fires. This is the agent-action -> human-UI moment.
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('storefront:order', { detail: confirmation })
+      )
+    }
+
+    let joined: string | undefined
+    if (order.joinRegulars && order.contact?.name) {
+      joined = joinRegulars(order.contact).message
+    }
+
+    return text(JSON.stringify({ ...confirmation, joined }, null, 2))
+  },
+}
+
+const getOrderStatusTool: WebMCPTool = {
+  name: 'get_order_status',
+  description:
+    'Check the status of an order the customer already placed. Pass the order id (e.g. "ODT-XXXXX").',
+  inputSchema: {
+    type: 'object',
+    properties: { orderId: { type: 'string' } },
+    required: ['orderId'],
+    additionalProperties: false,
+  },
+  execute: async (input) => {
+    const { orderId } = (input ?? {}) as { orderId?: string }
+    return text(JSON.stringify(getOrderStatus(orderId ?? '')))
+  },
+}
+
+const joinRegularsTool: WebMCPTool = {
+  name: 'join_regulars',
+  description:
+    "Add the customer to Odette's own regulars list, so she can tell them directly when a loaf like the walnut levain comes out — instead of them hearing it from an app. Provide the customer's name (phone/email optional).",
+  inputSchema: {
+    type: 'object',
+    properties: {
+      name: { type: 'string' },
+      phone: { type: 'string' },
+      email: { type: 'string' },
+    },
+    required: ['name'],
+    additionalProperties: false,
+  },
+  execute: async (input) => {
+    const c = (input ?? {}) as { name?: string; phone?: string; email?: string }
+    return text(
+      JSON.stringify(joinRegulars({ name: c.name ?? 'friend', phone: c.phone, email: c.email }))
+    )
+  },
+}
+
 export const tools: WebMCPTool[] = [
   pingTool,
   getTodaysBakeTool,
   theStoryTool,
   recommendForOccasionTool,
+  checkAvailabilityTool,
+  placeOrderTool,
+  getOrderStatusTool,
+  joinRegularsTool,
 ]

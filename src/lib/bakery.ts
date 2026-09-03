@@ -122,7 +122,9 @@ export function checkAvailability(productId: string): AvailabilityResult {
 }
 
 export function placeOrder(input: OrderInput): OrderConfirmation {
-  const lines = input.items
+  const items = Array.isArray(input.items) ? input.items : []
+  const contact = input.contact ?? { name: 'friend' }
+  const lines = items
     .map((it) => {
       const p = PRODUCTS.find((x) => x.id === it.id)
       return p ? { name: p.name, qty: it.qty, price: p.price } : null
@@ -136,7 +138,7 @@ export function placeOrder(input: OrderInput): OrderConfirmation {
   const names = lines.map((l) => `${l.qty}× ${l.name}`).join(', ')
   const how = input.fulfillment === 'delivery' ? 'delivery' : 'pickup'
   const summary = names
-    ? `Merci, ${input.contact.name || 'friend'} — I've set aside your ${names} for ${how} ${input.when}. It'll be wrapped warm with your name on it.`
+    ? `Merci, ${contact.name || 'friend'} — I've set aside your ${names} for ${how} ${input.when ?? 'soon'}. It'll be wrapped warm with your name on it.`
     : `Merci — your order is in.`
 
   ORDERS.set(orderId, { orderId, status: 'confirmed', summary })

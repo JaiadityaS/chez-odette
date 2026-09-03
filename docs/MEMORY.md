@@ -47,8 +47,11 @@
   - NOTE: product/story copy is still PLACEHOLDER (from stubs) — real Odette content lands in Phase 3.
 - [x] **Phase 3 done (real content + soul tools):** `bakery.ts` has Odette's real 6-item menu (walnut levain genuinely sold out), real story, real placeOrder (computes `keptFromAggregator` ~30%). `voice.ts` `recommendForOccasion` is genuinely computed — occasion keywords → tags, guest count, nut-allergy, and a SOLD-OUT FALLBACK (won't recommend a gone loaf; says so, offers best available). Soul tools registered in `tools.ts`: `get_todays_bake`, `the_story`, `recommend_for_occasion` (+ ping). Build passes; page shows real content (verified via page text).
   - Nice-to-have: re-verify get_todays_bake / recommend_for_occasion with a real agent in ChatGPT browser on the deployed site.
-- [ ] Next: Phase 4 — transaction tools (`check_availability`, `place_order` via `/api/orders`, `get_order_status`) + `join_regulars`. `place_order` must dispatch `storefront:order` so the confirmation shows in the UI (the human path already does this).
-- [ ] Then Phase 5 (aggregator page + blind-vision contrast capture) → 6 (polish) → 7 (ship).
+- [x] **Phase 4 done (transaction tools):** registered `check_availability`, `place_order`, `get_order_status`, `join_regulars`. Now 8 tools total. `place_order` dispatches `storefront:order` → confirmation shows on Odette's counter (agent-action → human-UI). placeOrder made defensive (empty input safe for harness). Build passes.
+  - DEVIATION from ARCHITECTURE: no `/api/orders` route — `place_order` runs client-side and mutates the in-module ORDERS map + fires the event. Simpler, works for static deploy, no persistence across reload (fine for demo). Documented deliberately.
+  - Core loop COMPLETE: agent can discover → recommend → check availability → order (shows on UI) → status → join regulars, all direct.
+  - TODO live-verify with a real agent: "order me a country sourdough for Saturday pickup, name Alex" → confirmation appears on the site.
+- [ ] Next: Phase 5 — build `src/app/aggregator/page.tsx` (cold "row 47, 30% fee" contrast page) + capture the blind-vision-vs-WebMCP two-door contrast. Then 6 (polish) → 7 (ship: README with registerTool snippet, video, Devpost).
 
 ## Open decisions for the maker
 1. Brand name "Miga" + tagline "Bread with a memory" — keep or change?
