@@ -1,6 +1,8 @@
 # MEMORY — running build log
 
 > The AI updates this as work happens, so context survives between sessions.
+>
+> **COLD RESUME (read if you're picking this up fresh):** the project is being built SOLO by the lead. A teammate may take over from this GitHub repo ONLY as a fallback if the lead runs out of compute. If that's you: you now own the WHOLE project (UI included). Read docs in this order — VISION → PRD → DESIGN → ARCHITECTURE → CONTRACT → PHASES → RULES — then continue from the "Status" section at the bottom of this file. Ignore the parallel-split scoping in SPLIT.md/HANDOFF.md; there is no split anymore.
 
 ## Locked decisions
 - Project: **Storefront** — a WebMCP-native bakery site that lets a customer's agent transact directly with the shop (keeping the margin and the customer relationship the aggregators steal).
@@ -30,9 +32,13 @@
 - [x] Stage 1 Vision, Stage 3 Winning — done (see VISION/PRD).
 - [x] Stage 2 research — done (above).
 - [x] Stage 4 planning files — drafted (VISION, PRD, DESIGN, ARCHITECTURE, RULES, PHASES, MEMORY).
-- [x] Work split: **maker owns UI + design (determining it themselves); teammate owns everything else + scaffold + deploy.** See SPLIT.md / HANDOFF.md / CONTRACT.md.
-- [ ] Teammate: Phase 0 scaffold + deploy, then send base to maker. Keep Tailwind theme NEUTRAL (design is the maker's).
-- [ ] Maker: determine design tokens (palette/type/brand), then build UI against the stub `src/lib/*` + the `storefront:order` event.
+- [x] PLAN: **solo build by the lead** (full ownership — UI + backend + WebMCP). Teammate = cold fallback via GitHub repo (https://github.com/JaiadityaS/chez-odette) only if the lead runs out of compute. SPLIT.md/HANDOFF.md parallel-split is now obsolete.
+- [x] Design tokens LOCKED (see DESIGN.md): Chez Odette, warm French-patisserie palette, Fraunces + Inter + script.
+- [x] GitHub repo created + seeded + pushed (public, MIT license). `probWebMCP.txt` gitignored.
+- [x] **Phase 0 done:** Next.js 16 + React 19 + Tailwind **v4** + TS, App Router, `src/` dir, `@/*` alias. `npm run build` passes clean. Stubs preserved at `src/lib/`.
+  - Tailwind v4 note: no `tailwind.config.js` — design tokens go in `src/app/globals.css` via `@theme` / CSS vars.
+- [ ] Phase 1 — prove WebMCP pipe: register `ping` tool in a `StorefrontTools` client component, feature-detect `document.modelContext`. NEEDS a live deploy to test in ChatGPT's in-app browser → Vercel deploy is the gating step (needs the lead's Vercel auth).
+- [ ] Then Phase 2 (UI storefront) → 3 (soul tools) → 4 (transaction) → 5 (contrast) → 6 (polish) → 7 (ship).
 
 ## Open decisions for the maker
 1. Brand name "Miga" + tagline "Bread with a memory" — keep or change?
