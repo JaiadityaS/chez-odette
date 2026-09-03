@@ -22,7 +22,7 @@ export default function OrderConfirmation() {
 
   return (
     <div
-      className="fixed bottom-5 left-1/2 z-50 w-[min(92vw,420px)] -translate-x-1/2 border border-line bg-surface p-5 shadow-lg"
+      className="fixed bottom-5 left-1/2 z-50 w-[min(92vw,420px)] -translate-x-1/2 border-t-4 border-brick bg-surface p-5 shadow-xl"
       style={{ borderRadius: "var(--radius-card)" }}
       role="status"
     >
@@ -43,7 +43,7 @@ export default function OrderConfirmation() {
       <div className="mt-3 flex items-center justify-between border-t border-line pt-3 text-xs text-faint">
         <span>#{order.orderId}</span>
         {order.keptFromAggregator > 0 && (
-          <span className="text-accent">
+          <span className="font-medium text-sage-deep">
             ${order.keptFromAggregator.toFixed(2)} kept from the aggregators
           </span>
         )}

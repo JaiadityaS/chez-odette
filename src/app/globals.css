@@ -2,28 +2,30 @@
 
 /* ─────────────────────────────────────────────────────────────
    Chez Odette — design tokens (locked, see docs/DESIGN.md)
-   Warm French-patisserie. Single warm light theme (no dark mode).
+   Warm bakery: brick-red + sage-green + cream. Single light theme.
    ───────────────────────────────────────────────────────────── */
 @theme {
-  --color-paper: #fbf3e9;
-  --color-surface: #ffffff;
-  --color-ink: #2a1e16;
-  --color-body: #6f6156;
-  --color-faint: #9a8b7d;
-  --color-accent: #c15f3c;
-  --color-accent-ink: #a44a2b;
-  --color-blush: #f7dbc9;
-  --color-blush-soft: #fbeadf;
-  --color-line: #eadfd0;
+  --color-paper: #f4ede0;      /* page cream */
+  --color-surface: #fbf6ec;    /* cards */
+  --color-ink: #33271e;        /* dark warm brown text */
+  --color-body: #6b5b4c;       /* body text */
+  --color-faint: #9a8877;      /* meta / captions */
+
+  --color-brick: #a83c2f;      /* primary red — nav, buttons, headings */
+  --color-brick-ink: #8a3021;  /* red hover / pressed */
+
+  --color-sage: #e3e7cd;       /* soft sage card fill */
+  --color-sage-mid: #c8d0a3;   /* CTA block fill */
+  --color-sage-deep: #6c7844;  /* sage text / labels */
+
+  --color-line: #e6dcc7;       /* warm hairline */
 
   --font-display: var(--font-fraunces), Georgia, serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-script: var(--font-kaushan), cursive;
 
   --radius-img: 16px;
-  --radius-card: 12px;
+  --radius-card: 14px;
   --radius-btn: 8px;
-  --radius-frame: 24px;
 }
 
 html {
@@ -39,22 +41,22 @@ body {
 
 h1, h2, h3 {
   font-family: var(--font-display);
-  color: var(--color-ink);
+  color: var(--color-brick);
   font-weight: 600;
-  line-height: 1.12;
+  line-height: 1.14;
 }
 
 ::selection {
-  background: var(--color-blush);
+  background: var(--color-sage);
   color: var(--color-ink);
 }
 
-/* Small caps eyebrow label used across the site */
+/* Small-caps section label */
 .eyebrow {
   font-family: var(--font-sans);
-  font-size: 13px;
-  letter-spacing: 0.14em;
+  font-size: 12px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-accent);
-  font-weight: 500;
+  color: var(--color-sage-deep);
+  font-weight: 600;
 }

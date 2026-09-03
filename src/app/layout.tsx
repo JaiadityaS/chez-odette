@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter, Kaushan_Script } from "next/font/google";
+import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import StorefrontTools from "@/components/StorefrontTools";
 import ToolHarness from "@/components/ToolHarness";
@@ -16,13 +16,6 @@ const inter = Inter({
   display: "swap",
 });
 
-const kaushan = Kaushan_Script({
-  variable: "--font-kaushan",
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "Chez Odette — neighborhood French bakery",
   description:
@@ -33,7 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${inter.variable} ${kaushan.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {children}

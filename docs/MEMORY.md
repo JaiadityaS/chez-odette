@@ -23,6 +23,12 @@
 ## WebMCP API (to VERIFY live in Phase 1)
 - `document.modelContext.registerTool({ name, description, inputSchema, execute })` per the challenge brief. Confirm exact surface + how ChatGPT in-app browser exposes it before building real tools.
 
+## UI redesign (Phase 6 — new reference)
+- Maker gave a new reference (MERCUSUAR bakery). UI overhauled to **brick-red (#a83c2f) + sage-green + cream (#f4ede0)**, serif headings in red, full-width colored nav bar, photo-driven. Dropped the framed-panel + script logo.
+- Real CC0 photos in `public/images/` (Openverse, public domain): table (hero), sourdough/walnut/baguette/campagne/rye/croissant (products), gathering/hamper (moments). `Product.image` field added (optional, non-breaking).
+- New sections: Header(brick bar), Hero(image), Welcome, TodaysBake(favourites w/ photos + sold-out + add-to-order), ForEveryMoment(4 sage cards), Testimonial, CtaBlock(green), Footer(brick). Removed FeatureBar/Story/BreadMark.
+- WebMCP tools UNCHANGED — pure UI reskin. Build passes.
+
 ## Contrast design (decided)
 - Primary demo contrast is now the **two-door**: the SAME deployed site accessed by a blind/screenshot (vision) agent vs. the WebMCP agent. Proves "the agent only succeeds because the site cooperated." Aggregator page demoted to a supporting beat.
 - To keep it HONEST (not rigged), the app needs a **true failure surface** (PRD MUST #6): a live sold-out state that's not trivially readable off the page, a computed occasion recommendation (not just printed), and no plainly-clickable checkout form. Built in Phases 3–4; captured in Phase 5.
@@ -51,7 +57,7 @@
   - DEVIATION from ARCHITECTURE: no `/api/orders` route — `place_order` runs client-side and mutates the in-module ORDERS map + fires the event. Simpler, works for static deploy, no persistence across reload (fine for demo). Documented deliberately.
   - Core loop COMPLETE: agent can discover → recommend → check availability → order (shows on UI) → status → join regulars, all direct.
   - TODO live-verify with a real agent: "order me a country sourdough for Saturday pickup, name Alex" → confirmation appears on the site.
-- [~] Phase 5 — aggregator contrast page DONE: `src/app/aggregator/page.tsx` at `/aggregator`. Cold fictional marketplace "DashBite", Odette = row #47, brand stripped, fee fine-print (~18% markup, $4.99 delivery, 15% service, DashBite keeps ~30%, no customer data). Links back to `/`. Build passes, route static.
+- [~] Phase 5 — aggregator contrast page DONE + VERIFIED LIVE at https://chez-odette-tau.vercel.app/aggregator. Cold "DashBite", Odette = row #47, brand stripped, fee fine-print (~18% markup, $4.99 delivery, 15% service, keeps ~30%, no customer data), links back to `/`. Screenshot-confirmed.
   - REMAINING in Phase 5: capture the blind-vision-vs-WebMCP two-door contrast (do together at record time — drive a vision-only agent vs the WebMCP agent; keep it honest).
 - [ ] Then 6 (polish) → 7 (ship: README with registerTool snippet, demo video, Devpost text).
 

@@ -11,6 +11,7 @@ export type Product = {
   story: string
   tags?: string[]
   imageHint?: string
+  image?: string
 }
 
 export type AvailabilityResult = { available: boolean; note: string }
@@ -36,6 +37,7 @@ export type OrderConfirmation = {
 const PRODUCTS: Product[] = [
   {
     id: 'country-sourdough',
+    image: '/images/sourdough.jpg',
     name: 'Country sourdough',
     price: 8,
     soldOut: false,
@@ -46,6 +48,7 @@ const PRODUCTS: Product[] = [
   },
   {
     id: 'walnut-levain',
+    image: '/images/walnut.jpg',
     name: 'Walnut levain',
     price: 9,
     soldOut: true, // gone for today — the honest sold-out state
@@ -56,6 +59,7 @@ const PRODUCTS: Product[] = [
   },
   {
     id: 'baguette-tradition',
+    image: '/images/baguette.jpg',
     name: 'Baguette de tradition',
     price: 4,
     soldOut: false,
@@ -66,6 +70,7 @@ const PRODUCTS: Product[] = [
   },
   {
     id: 'pain-de-campagne',
+    image: '/images/campagne.jpg',
     name: 'Pain de campagne',
     price: 9,
     soldOut: false,
@@ -76,6 +81,7 @@ const PRODUCTS: Product[] = [
   },
   {
     id: 'seeded-rye',
+    image: '/images/rye.jpg',
     name: 'Seeded rye',
     price: 8,
     soldOut: false,
@@ -86,6 +92,7 @@ const PRODUCTS: Product[] = [
   },
   {
     id: 'butter-croissant',
+    image: '/images/croissant.jpg',
     name: 'Butter croissant',
     price: 4.5,
     soldOut: false,
