@@ -51,7 +51,9 @@
   - DEVIATION from ARCHITECTURE: no `/api/orders` route — `place_order` runs client-side and mutates the in-module ORDERS map + fires the event. Simpler, works for static deploy, no persistence across reload (fine for demo). Documented deliberately.
   - Core loop COMPLETE: agent can discover → recommend → check availability → order (shows on UI) → status → join regulars, all direct.
   - TODO live-verify with a real agent: "order me a country sourdough for Saturday pickup, name Alex" → confirmation appears on the site.
-- [ ] Next: Phase 5 — build `src/app/aggregator/page.tsx` (cold "row 47, 30% fee" contrast page) + capture the blind-vision-vs-WebMCP two-door contrast. Then 6 (polish) → 7 (ship: README with registerTool snippet, video, Devpost).
+- [~] Phase 5 — aggregator contrast page DONE: `src/app/aggregator/page.tsx` at `/aggregator`. Cold fictional marketplace "DashBite", Odette = row #47, brand stripped, fee fine-print (~18% markup, $4.99 delivery, 15% service, DashBite keeps ~30%, no customer data). Links back to `/`. Build passes, route static.
+  - REMAINING in Phase 5: capture the blind-vision-vs-WebMCP two-door contrast (do together at record time — drive a vision-only agent vs the WebMCP agent; keep it honest).
+- [ ] Then 6 (polish) → 7 (ship: README with registerTool snippet, demo video, Devpost text).
 
 ## Open decisions for the maker
 1. Brand name "Miga" + tagline "Bread with a memory" — keep or change?
