@@ -37,7 +37,9 @@
 - [x] GitHub repo created + seeded + pushed (public, MIT license). `probWebMCP.txt` gitignored.
 - [x] **Phase 0 done:** Next.js 16 + React 19 + Tailwind **v4** + TS, App Router, `src/` dir, `@/*` alias. `npm run build` passes clean. Stubs preserved at `src/lib/`.
   - Tailwind v4 note: no `tailwind.config.js` — design tokens go in `src/app/globals.css` via `@theme` / CSS vars.
-- [ ] Phase 1 — prove WebMCP pipe: register `ping` tool in a `StorefrontTools` client component, feature-detect `document.modelContext`. NEEDS a live deploy to test in ChatGPT's in-app browser → Vercel deploy is the gating step (needs the lead's Vercel auth).
+- [~] Phase 1 — WebMCP pipe CODE DONE (build passes): `src/lib/webmcp.ts` (feature-detect helper, checks document.modelContext AND navigator.modelContext), `src/lib/tools.ts` (`ping` tool), `src/components/StorefrontTools.tsx` (registers on mount, renders null), `src/components/ToolHarness.tsx` (dev/`?harness=1` manual tester), mounted in `layout.tsx`. Fonts wired: Fraunces/Inter/Kaushan_Script.
+  - ASSUMPTION to verify live: tool result shape is `{ content: [{ type:'text', text }] }` and the global is `document.modelContext.registerTool`. Confirm/adjust after the ChatGPT in-app browser test.
+  - BLOCKED ON: Vercel deploy (import repo on vercel.com → auto-deploys on push). Then open the live URL in ChatGPT's in-app browser and ask the agent to call `ping` → expect "pong from Chez Odette".
 - [ ] Then Phase 2 (UI storefront) → 3 (soul tools) → 4 (transaction) → 5 (contrast) → 6 (polish) → 7 (ship).
 
 ## Open decisions for the maker
