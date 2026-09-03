@@ -1,6 +1,6 @@
 # DESIGN — Chez Odette
 
-> Documented from the shipped code (`src/app/globals.css` + `src/components/ui/*`), not intentions. French-editorial world à la *The French Dispatch*: warm homey cream, near-black ink + a black masthead, olive + wood-green, warm lamp-orange glow. Single warm light theme. Token-driven via Tailwind v4 `@theme`.
+> Documented from the shipped code (`src/app/globals.css` + `src/components/ui/*`), not intentions. French-editorial world à la *The French Dispatch*: warm homey cream, near-black ink + a black masthead, dusty rose (vieux rose), warm lamp-orange glow. Single warm light theme. Token-driven via Tailwind v4 `@theme`.
 
 ## Feeling
 Homey French-editorial bakery — part neighbourhood boulangerie, part warm newspaper. Cream paper ground, heavy black Didone headlines, a condensed masthead voice, olive and deep wood-green bands, and a single warm lamp-orange accent that glows like a shop lamp at dusk. Editorial and characterful, never clinical.
@@ -15,11 +15,11 @@ Homey French-editorial bakery — part neighbourhood boulangerie, part warm news
 | `--color-faint` | `#8c836f` | meta, captions |
 | `--color-brick` | `#d5883a` | warm LAMP-ORANGE — buttons, prices, accent (name kept for inheritance) |
 | `--color-brick-ink` | `#b56d26` | lamp hover / pressed |
-| `--color-wood` | `#3d4a39` | deep wood-green — WhyDirect band, footer, scrollbar, awning |
-| `--color-olive` | `#6f6a37` | olive — eyebrow labels, marquee marks |
-| `--color-sage` | `#dfe0c4` | soft olive fill (moment cards, marquee band) |
-| `--color-sage-mid` | `#c3c79a` | deeper olive fill (CTA block) |
-| `--color-sage-deep` | `#6f6a37` | olive text |
+| `--color-wood` | `#6e3440` | deep dusty rose (vieux rose) — WhyDirect band, footer, scrollbar, awning |
+| `--color-olive` | `#8f4b59` | dusty rose — eyebrow labels, marquee marks |
+| `--color-sage` | `#f2d9dd` | soft pink fill (marquee band) |
+| `--color-sage-mid` | `#e8c2c8` | rose fill (CTA block) |
+| `--color-sage-deep` | `#8f4b59` | dusty rose text |
 | `--color-line` | `#ddd0b6` | hairline borders |
 
 ## Type

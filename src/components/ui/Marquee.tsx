@@ -18,7 +18,7 @@ export default function Marquee() {
               <li key={i} className="flex items-center">
                 <span className="masthead px-6 text-[13px] text-ink">{w}</span>
                 <svg width="7" height="7" viewBox="0 0 7 7" aria-hidden="true">
-                  <rect x="1" y="1" width="4" height="4" transform="rotate(45 3.5 3.5)" fill="#6f6a37" />
+                  <rect x="1" y="1" width="4" height="4" transform="rotate(45 3.5 3.5)" fill="#8f4b59" />
                 </svg>
               </li>
             ))}

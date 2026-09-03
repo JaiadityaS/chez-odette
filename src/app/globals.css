@@ -3,7 +3,7 @@
 /* ─────────────────────────────────────────────────────────────
    Chez Odette — design tokens (see docs/DESIGN.md)
    French-editorial world à la The French Dispatch: warm homey cream,
-   near-black ink, olive + wood-green, warm lamp-orange glow.
+   near-black ink, dusty rose (vieux rose), warm lamp-orange glow.
    Single warm light theme. Token-driven via Tailwind v4 @theme.
    Note: token name `brick` now carries the LAMP-ORANGE accent (kept
    the name so components inherit the new accent without churn).
@@ -18,12 +18,12 @@
   --color-brick: #d5883a;      /* warm LAMP-ORANGE — buttons, prices, accent glow */
   --color-brick-ink: #b56d26;  /* lamp hover / pressed */
 
-  --color-wood: #3d4a39;       /* deep wood-green — bands, footer */
-  --color-olive: #6f6a37;      /* olive — labels, marks */
+  --color-wood: #6e3440;       /* deep dusty rose (vieux rose) — bands, footer */
+  --color-olive: #8f4b59;      /* dusty rose — labels, marks */
 
-  --color-sage: #dfe0c4;       /* soft olive fill (moment cards, marquee band) */
-  --color-sage-mid: #c3c79a;   /* deeper olive fill (CTA block) */
-  --color-sage-deep: #6f6a37;  /* olive text / eyebrow */
+  --color-sage: #f2d9dd;       /* soft pink fill (marquee band) */
+  --color-sage-mid: #e8c2c8;   /* rose fill (CTA block) */
+  --color-sage-deep: #8f4b59;  /* dusty rose text / label */
 
   --color-line: #ddd0b6;       /* warm hairline */
 
