@@ -15,7 +15,7 @@ const POINTS = [
 
 export default function WhyDirect() {
   return (
-    <section className="bg-brick text-white">
+    <section className="bg-wood text-white">
       <div className="mx-auto max-w-6xl px-6 py-16">
         <div className="mx-auto max-w-2xl text-center">
           <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-white/70">

@@ -5,7 +5,7 @@ export default function Hero() {
         <p className="eyebrow mb-4">
           <span lang="fr">Chez Odette</span> <span className="en">· since 1974</span>
         </p>
-        <h1 className="text-4xl md:text-5xl">Come in — the bread&rsquo;s still warm</h1>
+        <h1 className="text-5xl font-black md:text-6xl">Come in — the bread&rsquo;s still warm</h1>
         <p lang="fr" className="mt-3 font-display text-xl italic text-brick">
           « Entrez, le pain est encore chaud. »
         </p>
@@ -54,9 +54,9 @@ export default function Hero() {
                   fill="none"
                 />
               </defs>
-              <circle cx="60" cy="60" r="58" fill="#fbf6ec" stroke="#a83c2f" strokeWidth="2" />
-              <circle cx="60" cy="60" r="50" fill="none" stroke="#a83c2f" strokeWidth="0.75" opacity="0.5" />
-              <text fill="#a83c2f" fontSize="11" fontWeight="600" letterSpacing="3" fontFamily="var(--font-sans)">
+              <circle cx="60" cy="60" r="58" fill="#f8f2e4" stroke="#d5883a" strokeWidth="2" />
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#d5883a" strokeWidth="0.75" opacity="0.5" />
+              <text fill="#d5883a" fontSize="11" fontWeight="600" letterSpacing="3" fontFamily="var(--font-masthead)">
                 <textPath href="#stamp-arc" startOffset="0">
                   · FAIT MAISON · DEPUIS 1974 · FAIT MAISON ·
                 </textPath>
@@ -68,7 +68,7 @@ export default function Hero() {
                 fontFamily="var(--font-display)"
                 fontSize="26"
                 fontStyle="italic"
-                fill="#a83c2f"
+                fill="#17130d"
               >
                 CO
               </text>

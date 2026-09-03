@@ -1,8 +1,8 @@
 export default function Footer() {
   return (
-    <footer id="visit" className="bg-brick text-white">
+    <footer id="visit" className="bg-wood text-white">
       <div className="mx-auto max-w-6xl px-6 py-12 text-center">
-        <div className="text-lg font-medium uppercase tracking-[0.22em]">Chez Odette</div>
+        <div className="masthead text-xl tracking-[0.26em]">Chez Odette</div>
         <p className="mt-3 text-sm text-white/80">
           Open Tuesday–Sunday, 7am until the shelves are bare.
         </p>

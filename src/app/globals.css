@@ -1,35 +1,45 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────
-   Chez Odette — design tokens (locked, see docs/DESIGN.md)
-   Warm bakery: brick-red + sage-green + cream. Single light theme.
+   Chez Odette — design tokens (see docs/DESIGN.md)
+   French-editorial world à la The French Dispatch: warm homey cream,
+   near-black ink, olive + wood-green, warm lamp-orange glow.
+   Single warm light theme. Token-driven via Tailwind v4 @theme.
+   Note: token name `brick` now carries the LAMP-ORANGE accent (kept
+   the name so components inherit the new accent without churn).
    ───────────────────────────────────────────────────────────── */
 @theme {
-  --color-paper: #f4ede0;      /* page cream */
-  --color-surface: #fbf6ec;    /* cards */
-  --color-ink: #33271e;        /* dark warm brown text */
-  --color-body: #6b5b4c;       /* body text */
-  --color-faint: #9a8877;      /* meta / captions */
+  --color-paper: #efe7d4;      /* warm homey cream (page bg) */
+  --color-surface: #f8f2e4;    /* warm white (cards) */
+  --color-ink: #17130d;        /* warm near-black — headings, masthead */
+  --color-body: #4b4438;       /* warm dark taupe body */
+  --color-faint: #8c836f;      /* meta, captions */
 
-  --color-brick: #a83c2f;      /* primary red — nav, buttons, headings */
-  --color-brick-ink: #8a3021;  /* red hover / pressed */
+  --color-brick: #d5883a;      /* warm LAMP-ORANGE — buttons, prices, accent glow */
+  --color-brick-ink: #b56d26;  /* lamp hover / pressed */
 
-  --color-sage: #e3e7cd;       /* soft sage card fill */
-  --color-sage-mid: #c8d0a3;   /* CTA block fill */
-  --color-sage-deep: #6c7844;  /* sage text / labels */
+  --color-wood: #3d4a39;       /* deep wood-green — bands, footer */
+  --color-olive: #6f6a37;      /* olive — labels, marks */
 
-  --color-line: #e6dcc7;       /* warm hairline */
+  --color-sage: #dfe0c4;       /* soft olive fill (moment cards, marquee band) */
+  --color-sage-mid: #c3c79a;   /* deeper olive fill (CTA block) */
+  --color-sage-deep: #6f6a37;  /* olive text / eyebrow */
 
-  --font-display: var(--font-fraunces), Georgia, serif;
+  --color-line: #ddd0b6;       /* warm hairline */
+
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-masthead: var(--font-oswald), "Arial Narrow", sans-serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
 
-  --radius-img: 16px;
-  --radius-card: 14px;
-  --radius-btn: 8px;
+  --radius-img: 14px;
+  --radius-card: 12px;
+  --radius-btn: 6px;
 }
 
 html {
   background: var(--color-paper);
+  accent-color: var(--color-brick);
+  scrollbar-color: var(--color-wood) var(--color-paper);
 }
 
 body {
@@ -41,9 +51,10 @@ body {
 
 h1, h2, h3 {
   font-family: var(--font-display);
-  color: var(--color-brick);
-  font-weight: 600;
-  line-height: 1.14;
+  color: var(--color-ink);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
 }
 
 ::selection {
@@ -51,24 +62,28 @@ h1, h2, h3 {
   color: var(--color-ink);
 }
 
+/* Condensed newspaper masthead / label voice */
+.masthead {
+  font-family: var(--font-masthead);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 500;
+}
+
 /* Small-caps section label */
 .eyebrow {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  letter-spacing: 0.16em;
+  font-family: var(--font-masthead);
+  font-size: 13px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-sage-deep);
-  font-weight: 600;
+  color: var(--color-olive);
+  font-weight: 500;
 }
 .eyebrow .en {
   color: var(--color-faint);
 }
 
 /* Browser surfaces — themed from the palette, not defaults */
-html {
-  accent-color: var(--color-brick);
-  scrollbar-color: var(--color-brick) var(--color-paper);
-}
 :focus-visible {
   outline: 2px solid var(--color-brick);
   outline-offset: 2px;
@@ -82,7 +97,7 @@ html {
   background: var(--color-paper);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-brick);
+  background: var(--color-wood);
   border-radius: 999px;
   border: 3px solid var(--color-paper);
 }
@@ -93,15 +108,15 @@ html {
 }
 .lift:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 34px rgba(51, 39, 30, 0.14);
+  box-shadow: 0 16px 34px rgba(23, 19, 13, 0.16);
 }
 
-/* Awning stripe — a French bakery signature */
+/* Awning stripe — wood-green + cream, a homey bakery signature */
 .awning {
   height: 10px;
   background: repeating-linear-gradient(
     90deg,
-    var(--color-brick) 0 18px,
+    var(--color-wood) 0 18px,
     var(--color-surface) 18px 36px
   );
 }

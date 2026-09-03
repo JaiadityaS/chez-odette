@@ -16,11 +16,9 @@ export default function Marquee() {
           <ul key={copy} lang="fr" className="flex shrink-0 items-center">
             {WORDS.map((w, i) => (
               <li key={i} className="flex items-center">
-                <span className="px-6 text-[13px] uppercase tracking-[0.14em] text-brick">
-                  {w}
-                </span>
+                <span className="masthead px-6 text-[13px] text-ink">{w}</span>
                 <svg width="7" height="7" viewBox="0 0 7 7" aria-hidden="true">
-                  <rect x="1" y="1" width="4" height="4" transform="rotate(45 3.5 3.5)" fill="#6c7844" />
+                  <rect x="1" y="1" width="4" height="4" transform="rotate(45 3.5 3.5)" fill="#6f6a37" />
                 </svg>
               </li>
             ))}

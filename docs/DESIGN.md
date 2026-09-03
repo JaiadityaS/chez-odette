@@ -1,30 +1,33 @@
 # DESIGN — Chez Odette
 
-> Documented from the shipped code (`src/app/globals.css` + `src/components/ui/*`), not intentions. Warm neighbourhood-bakery world: brick-red + sage-green + cream. Single warm light theme (no dark mode). Token-driven via Tailwind v4 `@theme`.
+> Documented from the shipped code (`src/app/globals.css` + `src/components/ui/*`), not intentions. French-editorial world à la *The French Dispatch*: warm homey cream, near-black ink + a black masthead, olive + wood-green, warm lamp-orange glow. Single warm light theme. Token-driven via Tailwind v4 `@theme`.
 
 ## Feeling
-Warm, editorial, hand-made French bakery. Cream paper, brick-red serif headings, sage-green accents for "moments" and calls-to-action, real food photography. Elegant but human — a neighbourhood shop with a person behind the counter, not a chain.
+Homey French-editorial bakery — part neighbourhood boulangerie, part warm newspaper. Cream paper ground, heavy black Didone headlines, a condensed masthead voice, olive and deep wood-green bands, and a single warm lamp-orange accent that glows like a shop lamp at dusk. Editorial and characterful, never clinical.
 
 ## Color (Tailwind v4 `@theme` tokens in `globals.css`)
 | Token | Hex | Role |
 |---|---|---|
-| `--color-paper` | `#f4ede0` | page cream (body bg) |
-| `--color-surface` | `#fbf6ec` | cards, alternating sections |
-| `--color-ink` | `#33271e` | dark warm-brown text / non-red headings |
-| `--color-body` | `#6b5b4c` | body copy |
-| `--color-faint` | `#9a8877` | meta, captions |
-| `--color-brick` | `#a83c2f` | PRIMARY — nav bar, buttons, headings, prices |
-| `--color-brick-ink` | `#8a3021` | button hover / pressed |
-| `--color-sage` | `#e3e7cd` | soft sage card fill ("for every moment") |
-| `--color-sage-mid` | `#c8d0a3` | CTA block fill |
-| `--color-sage-deep` | `#6c7844` | eyebrow labels, "kept from aggregators" figure |
-| `--color-line` | `#e6dcc7` | hairline borders |
+| `--color-paper` | `#efe7d4` | warm homey cream (body bg) |
+| `--color-surface` | `#f8f2e4` | warm white (cards) |
+| `--color-ink` | `#17130d` | warm near-black — headings, black masthead |
+| `--color-body` | `#4b4438` | warm dark taupe body |
+| `--color-faint` | `#8c836f` | meta, captions |
+| `--color-brick` | `#d5883a` | warm LAMP-ORANGE — buttons, prices, accent (name kept for inheritance) |
+| `--color-brick-ink` | `#b56d26` | lamp hover / pressed |
+| `--color-wood` | `#3d4a39` | deep wood-green — WhyDirect band, footer, scrollbar, awning |
+| `--color-olive` | `#6f6a37` | olive — eyebrow labels, marquee marks |
+| `--color-sage` | `#dfe0c4` | soft olive fill (moment cards, marquee band) |
+| `--color-sage-mid` | `#c3c79a` | deeper olive fill (CTA block) |
+| `--color-sage-deep` | `#6f6a37` | olive text |
+| `--color-line` | `#ddd0b6` | hairline borders |
 
 ## Type
-- `--font-display`: **Fraunces** (Georgia serif fallback) — all headings + editorial italics. High-contrast, warm.
-- `--font-sans`: **Inter** (system-ui fallback) — body, nav, labels, buttons.
-- Headings default to **brick red** (`globals.css` `h1,h2,h3`); override to `text-ink` for softer section titles (Welcome, CtaBlock, ProductCard).
-- `.eyebrow`: Inter, 12px, uppercase, letter-spacing `.16em`, `--color-sage-deep`.
+- `--font-display`: **Playfair Display** (Georgia serif fallback), weights to **900 black** — headings + editorial italics. French Didone lineage.
+- `--font-masthead`: **Oswald** condensed ("Arial Narrow" fallback) — wordmark, nav, `.eyebrow` labels, marquee, the hero stamp. Newspaper-masthead voice.
+- `--font-sans`: **Inter** (system-ui fallback) — body copy.
+- Headings default to **near-black ink** (`globals.css` `h1,h2,h3`, weight 700); hero `h1` is `font-black` (900).
+- `.eyebrow` / `.masthead`: Oswald, uppercase, wide tracking, `--color-olive`.
 
 ## Space & shape
 - Full-width stacked sections (no framed panel); inner container `max-w-6xl` / `max-w-3xl` centered, `px-6`.
