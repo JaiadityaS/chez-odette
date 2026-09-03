@@ -1,0 +1,23 @@
+# deps / build
+node_modules/
+.next/
+out/
+dist/
+build/
+
+# env & secrets
+.env
+.env.*
+!.env.example
+
+# vercel
+.vercel/
+
+# os / editor
+.DS_Store
+Thumbs.db
+*.log
+
+# PRIVATE — strategy notes, not for the public repo
+probWebMCP.txt
+*.zip
