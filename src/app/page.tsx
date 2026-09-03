@@ -3,6 +3,7 @@ import Hero from "@/components/ui/Hero";
 import Welcome from "@/components/ui/Welcome";
 import TodaysBake from "@/components/ui/TodaysBake";
 import ForEveryMoment from "@/components/ui/ForEveryMoment";
+import WhyDirect from "@/components/ui/WhyDirect";
 import Testimonial from "@/components/ui/Testimonial";
 import CtaBlock from "@/components/ui/CtaBlock";
 import Footer from "@/components/ui/Footer";
@@ -16,6 +17,7 @@ export default function Home() {
       <Welcome />
       <TodaysBake />
       <ForEveryMoment />
+      <WhyDirect />
       <Testimonial />
       <CtaBlock />
       <Footer />

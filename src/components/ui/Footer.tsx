@@ -7,7 +7,7 @@ export default function Footer() {
           Open Tuesday–Sunday, 7am until the shelves are bare.
         </p>
         <p className="mt-1 text-sm text-white/70">14 Rue du Levain · your neighbourhood</p>
-        <p className="mt-5 text-xs text-white/60">
+        <p className="mt-5 font-display italic text-base text-white/90">
           Ordered by an agent? It still came straight to Odette.
         </p>
       </div>
