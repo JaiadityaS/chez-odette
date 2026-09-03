@@ -2,12 +2,18 @@
 
 import { useState } from "react";
 import { getTodaysBake, placeOrder, type Product } from "@/lib/bakery";
-import ProductCard from "./ProductCard";
+import SectionHead from "./SectionHead";
 
 const PICKUP_OPTIONS = ["Today", "Tomorrow", "This weekend"] as const;
 
+function price(p: Product) {
+  return `€${Number.isInteger(p.price) ? p.price : p.price.toFixed(2)}`;
+}
+
 export default function TodaysBake() {
   const products = getTodaysBake();
+  const featured = products.find((p) => !p.soldOut) ?? products[0];
+  const rest = products.filter((p) => p.id !== featured.id);
 
   const [selected, setSelected] = useState<Product | null>(null);
   const [name, setName] = useState("");
@@ -23,10 +29,6 @@ export default function TodaysBake() {
     setError("");
   }
 
-  // A real confirm step: nothing is ordered until the customer confirms, so one
-  // click no longer places an irreversible order, and repeat clicks can't stack
-  // up silent duplicates. Fires the same `storefront:order` event the WebMCP
-  // place_order tool uses.
   function confirm() {
     if (!selected) return;
     if (!name.trim()) {
@@ -46,27 +48,78 @@ export default function TodaysBake() {
   return (
     <section id="bake" className="bg-paper">
       <div className="mx-auto max-w-6xl px-6 py-16">
-        <div className="text-center">
-          <p className="eyebrow mb-3">
-            <span lang="fr">Le pain du jour</span> <span className="en">· Today&rsquo;s bake</span>
-          </p>
-          <h2 className="text-3xl md:text-4xl">Find your favourite</h2>
-          <p className="mx-auto mt-3 max-w-md text-[16px] text-body">
-            Baked in small batches this morning. When a loaf is gone, it&rsquo;s gone
-            until tomorrow.
-          </p>
+        <SectionHead
+          rubric="La carte"
+          rubricEn="Today’s bake"
+          title="Fresh from this morning"
+          aside="fait ce matin"
+        />
+
+        {/* Featured loaf — asymmetric, image-led */}
+        <div className="mt-9 grid gap-x-10 gap-y-6 md:grid-cols-12 md:items-center">
+          <figure className="md:col-span-7">
+            <div className="overflow-hidden" style={{ borderRadius: "var(--radius-img)" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={featured.image}
+                alt={featured.name}
+                className="h-[300px] w-full object-cover md:h-[420px]"
+              />
+            </div>
+          </figure>
+          <div className="md:col-span-5">
+            <p className="masthead text-[11px] text-olive">Le pain du jour · today&rsquo;s loaf</p>
+            <h3 className="mt-2 text-4xl md:text-5xl">{featured.name}</h3>
+            <p className="mt-3 text-[17px] leading-relaxed text-body">{featured.story}</p>
+            <div className="mt-5 flex items-baseline gap-4">
+              <span className="font-display text-3xl text-brick">{price(featured)}</span>
+              <button
+                onClick={() => open(featured)}
+                className="rounded-btn bg-brick px-5 py-2.5 text-sm text-white hover:bg-brick-ink transition-colors"
+              >
+                Order this
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((p) => (
-            <ProductCard key={p.id} product={p} onOrder={open} />
+        {/* The rest of the carte — a menu list, not a card grid */}
+        <div className="mt-14 grid gap-x-12 gap-y-7 md:grid-cols-2">
+          {rest.map((p) => (
+            <div key={p.id} className="flex items-start gap-4 border-t border-ink/15 pt-5">
+              <div
+                className="h-16 w-16 shrink-0 overflow-hidden rounded-[6px]"
+                style={p.soldOut ? { filter: "grayscale(0.5)", opacity: 0.7 } : undefined}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-baseline">
+                  <h4 className="font-display text-xl text-ink">{p.name}</h4>
+                  <span className="leader" aria-hidden="true" />
+                  <span className="font-display text-brick">{price(p)}</span>
+                </div>
+                <p className="mt-1 text-sm leading-snug text-body">{p.story}</p>
+                {p.soldOut ? (
+                  <p className="masthead mt-2 text-[11px] text-olive">Sold out — back tomorrow</p>
+                ) : (
+                  <button
+                    onClick={() => open(p)}
+                    className="masthead mt-2 text-[11px] text-brick hover:text-brick-ink"
+                  >
+                    Order &rarr;
+                  </button>
+                )}
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
       {selected && (
         <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 p-4 sm:items-center"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-ink/50 p-4 sm:items-center"
           onClick={() => setSelected(null)}
           role="dialog"
           aria-modal="true"
@@ -77,11 +130,9 @@ export default function TodaysBake() {
             style={{ borderRadius: "var(--radius-card)" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="eyebrow mb-1">Order from Odette</p>
-            <h3 className="text-ink text-xl">{selected.name}</h3>
-            <p className="mt-1 text-sm text-body">
-              €{Number.isInteger(selected.price) ? selected.price : selected.price.toFixed(2)} each · pickup
-            </p>
+            <p className="masthead text-[11px] text-olive">Order from Odette</p>
+            <h3 className="mt-1 text-2xl">{selected.name}</h3>
+            <p className="mt-1 text-sm text-body">{price(selected)} each · pickup</p>
 
             <label className="mt-4 block text-sm text-body">
               Your name

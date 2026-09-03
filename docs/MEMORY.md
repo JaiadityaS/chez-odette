@@ -42,6 +42,12 @@
 ## French + lively pass (impeccable)
 - Refinement (kept brick/sage/cream world): bilingual French section labels with `lang="fr"` (fixes a11y lang nit); French nav (La carte/Nos moments/Notre histoire) + "Boulangerie · Pâtisserie" + "Commander"; awning-stripe motif under header; scrolling **Marquee** of French bread names (src/components/ui/Marquee.tsx); rotating "fait maison · depuis 1974" SVG stamp on hero; hero French echo « Entrez, le pain est encore chaud. »; card hover-lift (.lift); themed browser surfaces (focus-visible, scrollbar, accent-color) in globals.css; footer « À bientôt. ». All motion gated behind prefers-reduced-motion. Detector clean, build passes.
 
+## Editorial re-layout (de-AI pass)
+- User: "vibe and alignment still looks AI." Root cause = everything centered (eyebrow→heading→body stack + equal card grids). Fixed by composing like a magazine (French Dispatch is editorial): LEFT-aligned, asymmetric 12-col grids, hard rules, datelines, drop cap, pull-quotes, captions.
+- New `SectionHead` (left, top-rule, French rubric + English, aside) replaces centered eyebrows everywhere. `.dropcap` + `.leader` (menu dot-leader) added to globals.
+- Hero: asymmetric front page (dateline rule; 8/4 headline+lead; captioned full-width plate). TodaysBake: featured loaf + a CARTE LIST (dot leaders, prices) — replaced the 3-col equal-card grid; ProductCard.tsx deleted. ForEveryMoment: asymmetric 7/5 figure grid, de-carded (hairline rules, no boxes). WhyDirect: left headline + figures list on wood band. Testimonial: big left pull-quote. CtaBlock: left headline + right action.
+- Palette/fonts/content/tools unchanged. Detector clean, build passes.
+
 ## Contrast design (decided)
 - Primary demo contrast is now the **two-door**: the SAME deployed site accessed by a blind/screenshot (vision) agent vs. the WebMCP agent. Proves "the agent only succeeds because the site cooperated." Aggregator page demoted to a supporting beat.
 - To keep it HONEST (not rigged), the app needs a **true failure surface** (PRD MUST #6): a live sold-out state that's not trivially readable off the page, a computed occasion recommendation (not just printed), and no plainly-clickable checkout form. Built in Phases 3–4; captured in Phase 5.

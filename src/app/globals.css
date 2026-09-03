@@ -102,6 +102,24 @@ h1, h2, h3 {
   border: 3px solid var(--color-paper);
 }
 
+/* Editorial drop cap for a lead paragraph */
+.dropcap::first-letter {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 3.6em;
+  line-height: 0.72;
+  float: left;
+  margin: 0.06em 0.12em 0 0;
+  color: var(--color-brick);
+}
+
+/* Dot leader between a name and its price, menu-style */
+.leader {
+  flex: 1 1 auto;
+  margin: 0 0.6rem 0.3rem;
+  border-bottom: 1px dotted var(--color-faint);
+}
+
 /* Hover lift for cards (user-initiated state) */
 .lift {
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
