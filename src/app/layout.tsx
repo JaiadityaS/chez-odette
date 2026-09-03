@@ -5,19 +5,19 @@ import StorefrontTools from "@/components/StorefrontTools";
 import ToolHarness from "@/components/ToolHarness";
 
 const fraunces = Fraunces({
-  variable: "--font-display",
+  variable: "--font-fraunces",
   subsets: ["latin"],
   display: "swap",
 });
 
 const inter = Inter({
-  variable: "--font-sans",
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
 
 const kaushan = Kaushan_Script({
-  variable: "--font-script",
+  variable: "--font-kaushan",
   weight: "400",
   subsets: ["latin"],
   display: "swap",
