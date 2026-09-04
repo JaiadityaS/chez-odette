@@ -27,7 +27,7 @@
 
   --color-line: #ddd0b6;       /* warm hairline */
 
-  --font-display: var(--font-playfair), Georgia, serif;
+  --font-display: var(--font-cormorant), Georgia, serif;
   --font-masthead: var(--font-oswald), "Arial Narrow", sans-serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
 
@@ -52,9 +52,16 @@ body {
 h1, h2, h3 {
   font-family: var(--font-display);
   color: var(--color-ink);
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  line-height: 1.06;
+}
+/* Elegant classical display: uppercase, letterspaced (Garamond caps) */
+h1, h2 {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+h3 {
+  line-height: 1.14;
 }
 
 ::selection {

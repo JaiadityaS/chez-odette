@@ -23,10 +23,10 @@ Homey French-editorial bakery — part neighbourhood boulangerie, part warm news
 | `--color-line` | `#ddd0b6` | hairline borders |
 
 ## Type
-- `--font-display`: **Playfair Display** (Georgia serif fallback), weights to **900 black** — headings + editorial italics. French Didone lineage.
+- `--font-display`: **Cormorant Garamond** (Georgia serif fallback), weight 600 — headings + editorial italics. Elegant French Garamond, high-contrast classical caps.
 - `--font-masthead`: **Oswald** condensed ("Arial Narrow" fallback) — wordmark, nav, `.eyebrow` labels, marquee, the hero stamp. Newspaper-masthead voice.
 - `--font-sans`: **Inter** (system-ui fallback) — body copy.
-- Headings default to **near-black ink** (`globals.css` `h1,h2,h3`, weight 700); hero `h1` is `font-black` (900).
+- **Display headings (`h1`, `h2`) are UPPERCASE with `letter-spacing: 0.05em`** — the airy classical-serif-caps look (Garamond/Trajan). `h3` stays mixed case (product/section names). Ink color.
 - `.eyebrow` / `.masthead`: Oswald, uppercase, wide tracking, `--color-olive`.
 
 ## Space & shape

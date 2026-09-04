@@ -12,7 +12,7 @@ export default function Hero() {
         {/* Asymmetric front page: big headline left, lead + actions right */}
         <div className="grid gap-x-10 gap-y-6 pt-10 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">
-            <h1 className="text-6xl font-black leading-[0.92] md:text-8xl">
+            <h1 className="text-5xl leading-[1.04] md:text-7xl">
               Come in, the bread&rsquo;s still warm
             </h1>
             <p lang="fr" className="mt-4 font-display text-2xl italic text-brick md:text-3xl">

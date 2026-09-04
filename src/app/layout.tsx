@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Oswald, Inter } from "next/font/google";
+import { Cormorant_Garamond, Oswald, Inter } from "next/font/google";
 import "./globals.css";
 import StorefrontTools from "@/components/StorefrontTools";
 import ToolHarness from "@/components/ToolHarness";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["400", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
 });
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${oswald.variable} ${inter.variable} h-full antialiased`}
+      className={`${cormorant.variable} ${oswald.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {children}
