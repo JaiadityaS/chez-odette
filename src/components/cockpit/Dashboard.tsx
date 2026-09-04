@@ -39,7 +39,21 @@ function AnimatedInt({ value }: { value: number }) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [value]);
-  return <span className="tnum">{shown}</span>;
+  return <span className="num">{shown}</span>;
+}
+
+/* ── the shop cat, asleep by the counter (breathes, flicks its tail) ─────── */
+function BakeryCat() {
+  return (
+    <svg width="36" height="26" viewBox="0 0 36 26" fill="none" aria-hidden="true">
+      <path className="cat-tail" d="M6 18 C 0.5 16, 1.5 8.5, 6.5 10" stroke="#b7a06a" strokeWidth="2.3" strokeLinecap="round" fill="none" />
+      <g className="cat-body">
+        <path d="M9 23 C 9 13.5, 14 10.5, 19 10.5 C 25 10.5, 29 14.5, 29 23 Z" fill="#3b342b" />
+        <path d="M13 12.5 l-2 -5 4.2 2.2 Z M25 12.5 l2 -5 -4.2 2.2 Z" fill="#3b342b" />
+        <ellipse className="cat-eye" cx="22.5" cy="16.5" rx="1.1" ry="1.7" fill="#e0a25c" />
+      </g>
+    </svg>
+  );
 }
 
 /* ── living: faint flour dust drifting up in the negative space ──────────── */
@@ -226,7 +240,13 @@ export default function Dashboard() {
             <span className={`masthead inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] ${agent ? "bg-ok text-charcoal" : "bg-white/10 text-white/55"}`}>
               {agent ? "● agent connected" : "○ manual mode"}
             </span>
-            <p className="masthead mt-3 text-[9px] tracking-[0.24em] text-white/35">Amélie · owner</p>
+            <div className="mt-4 flex items-center gap-2.5">
+              <BakeryCat />
+              <div className="leading-tight">
+                <p className="masthead text-[10px] text-white/45">Amélie · owner</p>
+                <p className="masthead text-[9px] text-white/30">&amp; Brioche, the shop cat</p>
+              </div>
+            </div>
           </div>
         </aside>
 
@@ -235,7 +255,7 @@ export default function Dashboard() {
           <header className="flex items-center justify-between border-b border-line bg-surface px-6 py-3">
             <div>
               <p className="masthead text-[10px] tracking-[0.2em] text-olive">Tuesday · morning service</p>
-              <h1 className="font-display text-2xl not-italic text-ink" style={{ textTransform: "none", letterSpacing: 0 }}>Today</h1>
+              <h1 className="font-display text-2xl not-italic text-ink">Today</h1>
             </div>
             <div className="flex items-center gap-3">
               <span className="md:hidden">
@@ -243,7 +263,7 @@ export default function Dashboard() {
               </span>
               <span className="relative inline-flex items-center gap-1.5 text-ink">
                 <Icon name="bell" />
-                {alerts.length > 0 && <span className="tnum masthead rounded-full bg-alert px-1.5 py-0.5 text-[10px] text-charcoal">{alerts.length}</span>}
+                {alerts.length > 0 && <span className="num rounded-full bg-alert px-1.5 py-0.5 text-[10px] text-charcoal">{alerts.length}</span>}
               </span>
             </div>
           </header>
@@ -252,26 +272,26 @@ export default function Dashboard() {
             {/* KPI strip */}
             <div id="today" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               <div className="rounded-[10px] border border-line bg-surface px-4 py-3">
-                <p className="masthead text-[10px] text-olive">needs attention</p>
-                <p className={`mt-1 font-display text-3xl ${alerts.length ? "text-alert" : "text-ok"}`}><AnimatedInt value={alerts.length} /></p>
+                <p className="masthead text-[11px] text-olive">Needs attention</p>
+                <p className={`num mt-1 text-3xl ${alerts.length ? "text-alert" : "text-ok"}`}><AnimatedInt value={alerts.length} /></p>
               </div>
               <div className="rounded-[10px] border border-line bg-surface px-4 py-3">
-                <p className="masthead text-[10px] text-olive">open tickets</p>
-                <p className="mt-1 font-display text-3xl text-ink"><AnimatedInt value={openOrders} /></p>
+                <p className="masthead text-[11px] text-olive">Open tickets</p>
+                <p className="num mt-1 text-3xl text-ink"><AnimatedInt value={openOrders} /></p>
               </div>
               <div className="rounded-[10px] border border-line bg-surface px-4 py-3">
-                <p className="masthead text-[10px] text-olive">€ in queue</p>
-                <p className="tnum mt-1 font-display text-3xl text-ink">{money(atRisk)}</p>
+                <p className="masthead text-[11px] text-olive">In the queue</p>
+                <p className="num mt-1 text-3xl text-ink">{money(atRisk)}</p>
               </div>
               <div className="rounded-[10px] border border-line bg-surface px-4 py-3">
-                <p className="masthead text-[10px] text-olive">on the menu</p>
-                <p className="tnum mt-1 font-display text-3xl text-ink">{onMenu}/{state.menu.length}</p>
+                <p className="masthead text-[11px] text-olive">On the menu</p>
+                <p className="num mt-1 text-3xl text-ink">{onMenu}/{state.menu.length}</p>
               </div>
             </div>
 
             <div className="mt-5 grid gap-5 lg:grid-cols-[1.5fr_1fr]">
               <div className="flex flex-col gap-5">
-                <Panel title="Needs attention" icon="bell" right={alerts.length > 0 ? <span className="tnum masthead rounded bg-alert px-1.5 py-0.5 text-[10px] text-charcoal">{alerts.length}</span> : <span className="masthead text-[10px] text-ok">clear</span>}>
+                <Panel title="Needs attention" icon="bell" right={alerts.length > 0 ? <span className="num rounded bg-alert px-1.5 py-0.5 text-[10px] text-charcoal">{alerts.length}</span> : <span className="masthead text-[10px] text-ok">clear</span>}>
                   {clear ? (
                     <p className="py-2 text-[13.5px] text-body">All clear. The board’s quiet — the oven can have you back now.</p>
                   ) : (
@@ -295,9 +315,9 @@ export default function Dashboard() {
                         const total = o.items.reduce((t, id) => t + (state.menu.find((m) => m.id === id)?.price ?? 0), 0);
                         return (
                           <tr key={o.id}>
-                            <td className="py-2.5"><span className="text-ink">{o.customer}</span><span className="tnum block text-[11px] text-faint">{o.id} · {o.items.length} item{o.items.length > 1 ? "s" : ""}</span></td>
-                            <td className="tnum py-2.5 text-body">{o.pickup}</td>
-                            <td className="tnum py-2.5 text-right text-ink">{money(total)}</td>
+                            <td className="py-2.5"><span className="text-ink">{o.customer}</span><span className="num block text-[11px] text-faint">{o.id} · {o.items.length} item{o.items.length > 1 ? "s" : ""}</span></td>
+                            <td className="num py-2.5 text-body">{o.pickup}</td>
+                            <td className="num py-2.5 text-right text-ink">{money(total)}</td>
                             <td className="py-2.5 text-right"><Chip tone={st.tone}>{st.label}</Chip></td>
                           </tr>
                         );
@@ -324,7 +344,7 @@ export default function Dashboard() {
                     {state.menu.map((m) => (
                       <li key={m.id} className="flex items-center justify-between gap-3">
                         <span className={m.available ? "text-ink" : "text-faint line-through"}>{m.name}</span>
-                        <span className="flex items-center gap-3"><span className="tnum text-brick">{money(m.price)}</span><button className="cockpit-btn text-[12px]" onClick={() => set86(m.id, m.available, "you")}>{m.available ? "86" : "back"}</button></span>
+                        <span className="flex items-center gap-3"><span className="num text-brick">{money(m.price)}</span><button className="cockpit-btn text-[12px]" onClick={() => set86(m.id, m.available, "you")}>{m.available ? "86" : "back"}</button></span>
                       </li>
                     ))}
                   </ul>
@@ -352,7 +372,7 @@ export default function Dashboard() {
                   <ul className="divide-y divide-line">
                     {state.log.map((l) => (
                       <li key={l.id} className="log-in flex items-baseline gap-3 px-2 py-2 text-[13px]">
-                        <span className="tnum masthead shrink-0 text-[10px] text-faint">{l.at}</span>
+                        <span className="num shrink-0 text-[10px] text-faint">{l.at}</span>
                         <span className="flex-1 text-body">{l.text}</span>
                         <span className={`masthead shrink-0 text-[9px] ${l.by === "agent" ? "text-ok" : "text-faint"}`}>{l.by}</span>
                       </li>

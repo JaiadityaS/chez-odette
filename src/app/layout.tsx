@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Oswald, Inter } from "next/font/google";
+import { Cormorant_Garamond, Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import StorefrontTools from "@/components/StorefrontTools";
 import ToolHarness from "@/components/ToolHarness";
@@ -12,8 +12,9 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
-const oswald = Oswald({
-  variable: "--font-oswald",
+// The one "modern" voice — used for numerals only.
+const grotesk = Space_Grotesk({
+  variable: "--font-grotesk",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   display: "swap",
@@ -35,7 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${oswald.variable} ${inter.variable} h-full antialiased`}
+      className={`${cormorant.variable} ${grotesk.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {children}

@@ -25,8 +25,8 @@
   --color-ok: #93cf90;         --color-ok-bg: #1f2e1f;      --color-ok-line: #314c31;
 
   --font-display: var(--font-cormorant), Georgia, serif;
-  --font-masthead: var(--font-oswald), "Arial Narrow", sans-serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-num: var(--font-grotesk), ui-sans-serif, sans-serif;
 
   --radius-btn: 6px;
 }
@@ -49,7 +49,7 @@ h1, h2, h3 {
   font-weight: 600;
   line-height: 1.06;
 }
-h1, h2 { text-transform: uppercase; letter-spacing: 0.05em; }
+h1, h2 { letter-spacing: 0; }
 
 ::selection { background: var(--color-brick); color: var(--color-charcoal); }
 :focus-visible { outline: 2px solid var(--color-brick); outline-offset: 2px; border-radius: 3px; }
@@ -57,13 +57,21 @@ h1, h2 { text-transform: uppercase; letter-spacing: 0.05em; }
 ::-webkit-scrollbar-track { background: var(--color-paper); }
 ::-webkit-scrollbar-thumb { background: var(--color-line); border-radius: 999px; border: 3px solid var(--color-paper); }
 
+/* Small label voice — sentence case, sits with the theme (no caps) */
 .masthead {
-  font-family: var(--font-masthead);
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
+  font-family: var(--font-sans);
+  letter-spacing: 0.01em;
   font-weight: 500;
 }
 .tnum { font-variant-numeric: tabular-nums lining-nums; }
+
+/* Numbers — the one modern voice */
+.num {
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
 
 .cockpit-btn {
   border: 1px solid var(--color-line);
@@ -117,4 +125,12 @@ h1, h2 { text-transform: uppercase; letter-spacing: 0.05em; }
     to { opacity: 1; transform: none; }
   }
   .log-in { animation: logIn 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+
+  /* the bakery cat — breathing, with the odd tail flick */
+  @keyframes catBreathe { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.05); } }
+  .cat-body { transform-origin: bottom center; animation: catBreathe 3.6s ease-in-out infinite; }
+  @keyframes tailFlick { 0%, 84%, 100% { transform: rotate(0deg); } 90% { transform: rotate(-18deg); } 95% { transform: rotate(7deg); } }
+  .cat-tail { transform-origin: 5px 17px; animation: tailFlick 5.5s ease-in-out infinite; }
+  @keyframes catBlink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+  .cat-eye { transform-origin: center; animation: catBlink 6s ease-in-out infinite; }
 }
