@@ -29,7 +29,7 @@ export default function OrderConfirmation() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="eyebrow mb-1">Order confirmed</p>
-          <p className="font-display text-lg text-ink">Merci — see you soon</p>
+          <p className="font-display text-lg text-ink">Merci, see you soon</p>
         </div>
         <button
           onClick={() => setOrder(null)}

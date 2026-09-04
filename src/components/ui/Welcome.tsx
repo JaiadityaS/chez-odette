@@ -6,7 +6,7 @@ export default function Welcome() {
     <section id="story" className="bg-surface">
       <div className="mx-auto max-w-6xl px-6 py-16">
         <SectionHead
-          rubric="Le mot d’Odette"
+          rubric="Le mot d’Amélie"
           rubricEn="Our story"
           title="The starter is older than the building"
           aside="La Maison"
@@ -19,7 +19,7 @@ export default function Welcome() {
             <p className="font-display text-2xl italic leading-snug text-ink">
               &ldquo;If I wouldn&rsquo;t eat it myself, it doesn&rsquo;t leave the oven.&rdquo;
             </p>
-            <p className="masthead mt-3 text-[11px] text-olive">Odette · the baker</p>
+            <p className="masthead mt-3 text-[11px] text-olive">Amélie, the baker</p>
           </aside>
         </div>
       </div>

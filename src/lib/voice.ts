@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Odette's voice + the COMPUTED occasion recommendation.
+// Amélie's voice + the COMPUTED occasion recommendation.
 // This reasoning is NOT printed anywhere on the page — it accounts for the
 // occasion, guest count, preferences AND live availability (it won't recommend
 // a sold-out loaf; it says so and offers the best available instead). A
@@ -20,7 +20,7 @@ export function recommendForOccasion(input: {
   const occ = occasion.toLowerCase()
   const pref = (input.prefs ?? '').toLowerCase()
 
-  // Occasion → the tags Odette would reach for.
+  // Occasion → the tags Amélie would reach for.
   const wants: string[] = []
   if (/anniversar|romantic|date|love/.test(occ)) wants.push('anniversary', 'celebration')
   if (/celebrat|birthday|party|friends|gather/.test(occ)) wants.push('celebration', 'sharing')
@@ -44,14 +44,14 @@ export function recommendForOccasion(input: {
 
   const soldOutNote =
     bestOverall && bestOverall.soldOut && bestOverall.id !== pick.id
-      ? `The ${bestOverall.name.toLowerCase()} would have been my first thought, but it's gone for today. `
+      ? `The ${bestOverall.name.toLowerCase()} would've been my first pick, but it's gone for today. `
       : ''
 
   const guestNote =
     guests >= 6
-      ? ` For ${guests}, take two — this table won't leave crumbs.`
+      ? ` For ${guests} of you, get two. Nobody ever complained about too much bread.`
       : guests > 1
-        ? ` One is plenty for ${guests}.`
+        ? ` One should be plenty for ${guests}.`
         : ''
 
   const inRosasVoice =

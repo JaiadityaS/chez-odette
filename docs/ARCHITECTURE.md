@@ -27,8 +27,8 @@
     ToolHarness.tsx       # dev-only manual tool invoker
     ...UI components
   /lib
-    bakery.ts             # Odette's story, products, today's bake, stock (the truth)
-    voice.ts              # Odette's voice helpers (in-voice response builders)
+    bakery.ts             # Amélie's story, products, today's bake, stock (the truth)
+    voice.ts              # Amélie's voice helpers (in-voice response builders)
     orders.ts             # order store + mock confirmation logic
     tools.ts              # tool definitions (name, description, inputSchema, execute)
 LICENSE                   # open-source (MIT) — required, visible in About

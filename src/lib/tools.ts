@@ -2,7 +2,7 @@
 // the dev ToolHarness can invoke each one's execute() without an agent.
 //
 // Phase 1: ping (verified live with a real agent).
-// Phase 3: the SOUL tools — the ones that carry Odette's identity through the
+// Phase 3: the SOUL tools — the ones that carry Amélie's identity through the
 // agent, not just data. See docs/PRD.md.
 
 import { type WebMCPTool, text } from './webmcp'
@@ -20,15 +20,15 @@ import { recommendForOccasion } from './voice'
 const pingTool: WebMCPTool = {
   name: 'ping',
   description:
-    "Health check for the Chez Odette storefront. Returns a friendly confirmation that the bakery's WebMCP tools are reachable.",
+    "Health check for the Chez Amélie storefront. Returns a friendly confirmation that the bakery's WebMCP tools are reachable.",
   inputSchema: { type: 'object', properties: {}, additionalProperties: false },
-  execute: async () => text('pong from Chez Odette — the ovens are warm.'),
+  execute: async () => text('pong from Chez Amélie, the ovens are warm.'),
 }
 
 const getTodaysBakeTool: WebMCPTool = {
   name: 'get_todays_bake',
   description:
-    "List what Odette baked today at Chez Odette — each loaf with its price, live availability, and Odette's own note on it. Use this to tell the customer what's fresh right now. Availability here is the truth; don't guess it from the page.",
+    "List what Amélie baked today at Chez Amélie, with each loaf's price, live availability, and Amélie's own note on it. Use this to tell the customer what's fresh right now. Availability here is the truth; don't guess it from the page.",
   inputSchema: { type: 'object', properties: {}, additionalProperties: false },
   execute: async () => {
     const items = getTodaysBake().map((p) => ({
@@ -37,16 +37,16 @@ const getTodaysBakeTool: WebMCPTool = {
       price: p.price,
       available: !p.soldOut,
       tags: p.tags ?? [],
-      fromOdette: p.story,
+      fromTheBaker: p.story,
     }))
-    return text(JSON.stringify({ bakery: 'Chez Odette', items }, null, 2))
+    return text(JSON.stringify({ bakery: 'Chez Amélie', items }, null, 2))
   },
 }
 
 const theStoryTool: WebMCPTool = {
   name: 'the_story',
   description:
-    "Odette's story in her own words — who she is, the starter older than the building, and why buying direct matters. Use this when the customer asks about the bakery or the baker, so you can speak in her voice.",
+    "Amélie's story in her own words: who she is, the starter that's older than the building, and why buying direct matters. Use this when the customer asks about the bakery or the baker, so you can speak in her voice.",
   inputSchema: { type: 'object', properties: {}, additionalProperties: false },
   execute: async () => text(getStory()),
 }
@@ -54,7 +54,7 @@ const theStoryTool: WebMCPTool = {
 const recommendForOccasionTool: WebMCPTool = {
   name: 'recommend_for_occasion',
   description:
-    "Ask Odette what to buy for a particular occasion. She reasons over what's actually available today (she won't recommend a sold-out loaf — she'll say so and offer the best alternative), the number of guests, and any dietary preferences. Returns her personal recommendation in her own voice.",
+    "Ask Amélie what to buy for a particular occasion. She reasons over what's actually available today (she won't recommend a sold-out loaf; she'll say so and offer the best alternative), the number of guests, and any dietary preferences. Returns her personal recommendation in her own voice.",
   inputSchema: {
     type: 'object',
     properties: {
@@ -89,7 +89,7 @@ const recommendForOccasionTool: WebMCPTool = {
           id: rec.item.id,
           price: rec.item.price,
           available: !rec.item.soldOut,
-          fromOdette: rec.inRosasVoice,
+          fromTheBaker: rec.inRosasVoice,
         },
         null,
         2
@@ -101,7 +101,7 @@ const recommendForOccasionTool: WebMCPTool = {
 const checkAvailabilityTool: WebMCPTool = {
   name: 'check_availability',
   description:
-    "Check whether a specific loaf is available at Chez Odette right now. Availability changes through the day and loaves sell out — this is the live truth, more reliable than reading the page. Pass a product id from get_todays_bake.",
+    "Check whether a specific loaf is available at Chez Amélie right now. Availability changes through the day and loaves sell out, so this is the live truth, more reliable than reading the page. Pass a product id from get_todays_bake.",
   inputSchema: {
     type: 'object',
     properties: {
@@ -122,7 +122,7 @@ const checkAvailabilityTool: WebMCPTool = {
 const placeOrderTool: WebMCPTool = {
   name: 'place_order',
   description:
-    "Place a direct order with Odette — no marketplace, no middleman, she keeps the full price. Provide items (id + qty from get_todays_bake), pickup or delivery, when, and the customer's name (phone/email optional). Set joinRegulars to add them to Odette's own list. Returns a confirmation and shows the order on Odette's counter.",
+    "Place a direct order with Amélie. She keeps the full price because there's no marketplace in between. Provide items (id + qty from get_todays_bake), pickup or delivery, when, and the customer's name (phone/email optional). Set joinRegulars to add them to Amélie's own list. Returns a confirmation and shows the order on Amélie's counter.",
   inputSchema: {
     type: 'object',
     properties: {
@@ -153,7 +153,7 @@ const placeOrderTool: WebMCPTool = {
       },
       joinRegulars: {
         type: 'boolean',
-        description: "Add the customer to Odette's own regulars list.",
+        description: "Add the customer to Amélie's own regulars list.",
       },
     },
     required: ['items', 'fulfillment', 'when', 'contact'],
@@ -163,7 +163,7 @@ const placeOrderTool: WebMCPTool = {
     const order = (input ?? {}) as OrderInput
     const confirmation = placeOrder(order)
 
-    // Show the order on Odette's counter (the human UI) — the same event the
+    // Show the order on Amélie's counter (the human UI) — the same event the
     // human "Add to order" button fires. This is the agent-action -> human-UI moment.
     if (typeof window !== 'undefined') {
       window.dispatchEvent(
@@ -199,7 +199,7 @@ const getOrderStatusTool: WebMCPTool = {
 const joinRegularsTool: WebMCPTool = {
   name: 'join_regulars',
   description:
-    "Add the customer to Odette's own regulars list, so she can tell them directly when a loaf like the walnut levain comes out — instead of them hearing it from an app. Provide the customer's name (phone/email optional).",
+    "Add the customer to Amélie's own regulars list, so she can tell them herself when a loaf like the walnut levain comes out, instead of them hearing it from an app. Provide the customer's name (phone/email optional).",
   inputSchema: {
     type: 'object',
     properties: {

@@ -1,4 +1,4 @@
-# DESIGN — Chez Odette
+# DESIGN — Chez Amélie
 
 > Documented from the shipped code (`src/app/globals.css` + `src/components/ui/*`), not intentions. French-editorial world à la *The French Dispatch*: warm homey cream, near-black ink + a black masthead, dusty rose (vieux rose), warm lamp-orange glow. Single warm light theme. Token-driven via Tailwind v4 `@theme`.
 
@@ -35,12 +35,12 @@ Homey French-editorial bakery — part neighbourhood boulangerie, part warm news
 - Radius: images `--radius-img: 16px`, cards `--radius-card: 14px`, buttons `--radius-btn: 8px`.
 
 ## Sections (homepage)
-Header (brick bar, wordmark + nav + Order) → Hero (Odette first-person headline + two CTAs + wide photo) → Welcome (story) → TodaysBake (photo product cards, sold-out state, order-confirm dialog) → ForEveryMoment (4 sage cards) → Testimonial (stars + quote) → CtaBlock (sage-mid block) → Footer (brick). `OrderConfirmation` toast listens for the `storefront:order` event.
+Header (brick bar, wordmark + nav + Order) → Hero (Amélie first-person headline + two CTAs + wide photo) → Welcome (story) → TodaysBake (photo product cards, sold-out state, order-confirm dialog) → ForEveryMoment (4 sage cards) → Testimonial (stars + quote) → CtaBlock (sage-mid block) → Footer (brick). `OrderConfirmation` toast listens for the `storefront:order` event.
 
 ## Imagery
 Real warm food photography (CC0, in `public/images/`): `table` (hero flat-lay), `sourdough`, `walnut`, `baguette`, `campagne`, `rye`, `croissant`, `gathering`, `hamper`. `object-cover` in fixed-aspect rounded containers. Sold-out items render grayscaled.
 
-## Voice (Odette's — UI copy AND WebMCP tool responses)
+## Voice (Amélie's — UI copy AND WebMCP tool responses)
 First person, warm, unhurried, specific; she names things and gives reasons. Currency is **€** (French bakery on Rue du Levain). Example: *"The walnut levain — I only bake it on weekends; the walnuts go in while the dough's still warm."* Never corporate; the front door speaks in her voice too, not agency voice.
 
 ## Anti-patterns

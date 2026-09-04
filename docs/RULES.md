@@ -7,7 +7,7 @@
 
 ## Build discipline (playbook Stage 6–7)
 - **Prove the pipe before features.** Simplest possible placeholder end-to-end first, then build the real thing on top.
-- **Generic-first, then specific.** Confirm the machinery with trivial inputs before swapping in Odette's real content.
+- **Generic-first, then specific.** Confirm the machinery with trivial inputs before swapping in Amélie's real content.
 - Isolate unknowns: each phase introduces exactly ONE thing that could fail.
 - Inside hard phases, work in small steps, explain each, and stop for review.
 - Teach as you go: say what changed, why, and what to check. The maker must understand every layer (a mid-demo failure must be fixable).
@@ -20,7 +20,7 @@
 ## Honesty & safety
 - Never fake the demo. If real behavior ≠ script, change the script.
 - No real payments, no real money, no real PII. Simulated/test-mode only.
-- Keep Odette's voice consistent — it's defined in `lib/voice.ts` and DESIGN.md, used everywhere.
+- Keep Amélie's voice consistent — it's defined in `lib/voice.ts` and DESIGN.md, used everywhere.
 
 ## Process
 - Update MEMORY.md as work happens (decisions, what's done, what's next, gotchas).

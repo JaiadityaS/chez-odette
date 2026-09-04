@@ -32,7 +32,7 @@ export default function TodaysBake() {
   function confirm() {
     if (!selected) return;
     if (!name.trim()) {
-      setError("Please add a name so Odette knows whose order it is.");
+      setError("Please add a name so Amélie knows whose order it is.");
       return;
     }
     const confirmation = placeOrder({
@@ -102,7 +102,7 @@ export default function TodaysBake() {
                 </div>
                 <p className="mt-1 text-sm leading-snug text-body">{p.story}</p>
                 {p.soldOut ? (
-                  <p className="masthead mt-2 text-[11px] text-olive">Sold out — back tomorrow</p>
+                  <p className="masthead mt-2 text-[11px] text-olive">Sold out, back tomorrow</p>
                 ) : (
                   <button
                     onClick={() => open(p)}
@@ -130,7 +130,7 @@ export default function TodaysBake() {
             style={{ borderRadius: "var(--radius-card)" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="masthead text-[11px] text-olive">Order from Odette</p>
+            <p className="masthead text-[11px] text-olive">Order from Amélie</p>
             <h3 className="mt-1 text-2xl">{selected.name}</h3>
             <p className="mt-1 text-sm text-body">{price(selected)} each · pickup</p>
 

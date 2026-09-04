@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// THE FROZEN SEAM (see docs/CONTRACT.md) — now filled with real Odette content.
+// THE FROZEN SEAM (see docs/CONTRACT.md) — now filled with real Amélie content.
 // Types/signatures are frozen; bodies are real.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -31,7 +31,7 @@ export type OrderConfirmation = {
   keptFromAggregator: number
 }
 
-// ── Odette's real menu. One item (walnut levain) is genuinely sold out today —
+// ── Amélie's real menu. One item (walnut levain) is genuinely sold out today —
 // this is the live-availability truth the WebMCP tools report reliably and a
 // screenshot agent tends to get wrong (see docs/PRD.md MUST #6). ──
 const PRODUCTS: Product[] = [
@@ -42,7 +42,7 @@ const PRODUCTS: Product[] = [
     price: 8,
     soldOut: false,
     story:
-      "My everyday loaf. The starter came from my mother's kitchen — it's older than this building. Proofed overnight so the crust sings when you cut it.",
+      "This is my everyday loaf. The starter came out of my mother's kitchen and it's older than the building itself. I let it proof overnight so the crust really cracks when you cut in.",
     tags: ['everyday', 'sharing'],
     imageHint: 'round golden sourdough, floured top',
   },
@@ -51,9 +51,9 @@ const PRODUCTS: Product[] = [
     image: '/images/walnut.jpg',
     name: 'Walnut levain',
     price: 9,
-    soldOut: true, // gone for today — the honest sold-out state
+    soldOut: true, // genuinely gone for today (the honest sold-out state)
     story:
-      "I only bake this on weekends. The walnuts go in while the dough is still warm, so they toast from the inside. My grandmother made it for her own anniversary.",
+      "I only bake this one on weekends. I fold the walnuts in while the dough is still warm so they toast from the inside. My grandmother used to make it every year for her wedding anniversary.",
     tags: ['anniversary', 'celebration', 'weekend'],
     imageHint: 'dark crusted loaf studded with walnuts',
   },
@@ -64,7 +64,7 @@ const PRODUCTS: Product[] = [
     price: 4,
     soldOut: false,
     story:
-      "Flour, water, salt, time — nothing else, by law and by love. Baked twice a day so there's always one still warm at the counter.",
+      "Just flour, water, salt and time. That's what the law says and it's how I'd do it anyway. I bake them twice a day, so there's usually a warm one waiting on the counter.",
     tags: ['everyday', 'morning'],
     imageHint: 'crisp golden baguette',
   },
@@ -75,7 +75,7 @@ const PRODUCTS: Product[] = [
     price: 9,
     soldOut: false,
     story:
-      "A big country round with a little rye for depth. This is the loaf for a long table and a slow dinner — it keeps for days and toasts beautifully.",
+      "A big country round with a bit of rye in it for depth. This is the one I'd pick for a long dinner with people you like. It keeps for days and it's lovely toasted.",
     tags: ['sharing', 'dinner', 'everyday'],
     imageHint: 'large rustic round, scored cross',
   },
@@ -86,7 +86,7 @@ const PRODUCTS: Product[] = [
     price: 8,
     soldOut: false,
     story:
-      "Dense, dark and honest — sunflower and flax, a long ferment for that gentle sourness. My husband's favourite, so I never stop making it.",
+      "Dense and dark, with sunflower and flax, and a long slow ferment that gives it a gentle sourness. It's my husband's favourite, so I'll probably never stop making it.",
     tags: ['hearty', 'everyday'],
     imageHint: 'dark seeded rye loaf',
   },
@@ -97,7 +97,7 @@ const PRODUCTS: Product[] = [
     price: 4.5,
     soldOut: false,
     story:
-      "Laminated by hand with proper French butter, folded the night before. Come at seven and you'll catch them before anyone else does.",
+      "I laminate these by hand with proper French butter and fold them the night before. Come by at seven and you'll get them before anyone else does.",
     tags: ['morning', 'breakfast'],
     imageHint: 'flaky golden croissant',
   },
@@ -112,11 +112,12 @@ export function getTodaysBake(): Product[] {
 
 export function getStory(): string {
   return (
-    "I'm Odette. I've opened these shutters at four in the morning for longer than " +
-    "I care to admit. The starter I bake with is older than this building — my mother " +
-    "fed it, and hers before that. I don't make much, and I sell out most days, because " +
-    "I'd rather bake a little I'm proud of than a lot I'm not. When you buy a loaf here, " +
-    "it comes from my hands to yours — no shelf, no middleman, no stranger taking a cut."
+    "I'm Amélie. I've been opening these shutters at four in the morning since 1974, " +
+    "and honestly I've lost count of the years. The starter I bake with is older than " +
+    "the building. My mother kept it going, and her mother before her, and now it's mine " +
+    "to feed. I don't make a lot. Most days I've sold out by the afternoon, and I'd rather " +
+    "that than have bread sitting around that I'm not proud of. When you buy a loaf from " +
+    "me, you're buying it from me. Nobody stands in the middle taking their cut."
   )
 }
 
@@ -124,8 +125,8 @@ export function checkAvailability(productId: string): AvailabilityResult {
   const p = PRODUCTS.find((x) => x.id === productId)
   if (!p) return { available: false, note: "I don't bake that one, I'm afraid." }
   return p.soldOut
-    ? { available: false, note: `The ${p.name.toLowerCase()} is gone for today — come early tomorrow.` }
-    : { available: true, note: `Yes — fresh ${p.name.toLowerCase()} on the counter right now.` }
+    ? { available: false, note: `The ${p.name.toLowerCase()} has gone for today. Come by early tomorrow and I'll have more.` }
+    : { available: true, note: `Yes, there's fresh ${p.name.toLowerCase()} on the counter right now.` }
 }
 
 export function placeOrder(input: OrderInput): OrderConfirmation {
@@ -139,14 +140,14 @@ export function placeOrder(input: OrderInput): OrderConfirmation {
     .filter((l): l is { name: string; qty: number; price: number } => l !== null)
 
   const subtotal = lines.reduce((s, l) => s + l.price * l.qty, 0)
-  // What a marketplace would have skimmed (~30%) — the money Odette keeps.
+  // What a marketplace would have skimmed (~30%) — the money Amélie keeps.
   const keptFromAggregator = Math.round(subtotal * 0.3 * 100) / 100
   const orderId = 'ODT-' + Math.random().toString(36).slice(2, 7).toUpperCase()
   const names = lines.map((l) => `${l.qty}× ${l.name}`).join(', ')
   const how = input.fulfillment === 'delivery' ? 'delivery' : 'pickup'
   const summary = names
-    ? `Merci, ${contact.name || 'friend'} — I've set aside your ${names} for ${how} ${input.when ?? 'soon'}. It'll be wrapped warm with your name on it.`
-    : `Merci — your order is in.`
+    ? `Merci ${contact.name || 'friend'}! I've put your ${names} aside for ${how} ${input.when ?? 'soon'}. I'll wrap it up warm with your name on it.`
+    : `Merci, your order's in.`
 
   ORDERS.set(orderId, { orderId, status: 'confirmed', summary })
   return { orderId, status: 'confirmed', summary, keptFromAggregator }
@@ -157,7 +158,7 @@ export function getOrderStatus(orderId: string): { orderId: string; status: stri
     ORDERS.get(orderId) ?? {
       orderId,
       status: 'not_found',
-      summary: "I can't find that order — are you sure of the number?",
+      summary: "I can't find that order. Are you sure that's the right number?",
     }
   )
 }
@@ -168,6 +169,6 @@ export function joinRegulars(contact: { name: string; phone?: string; email?: st
 } {
   return {
     ok: true,
-    message: `Welcome to the regulars, ${contact.name}. I'll let you know the day the walnut levain comes out — you'll hear it from me, not from an app.`,
+    message: `Welcome to the regulars, ${contact.name}. I'll drop you a line the day the walnut levain comes out. You'll hear it from me, not from some app.`,
   }
 }

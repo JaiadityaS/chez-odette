@@ -11,13 +11,13 @@ export type Product = {
   name: string
   price: number          // dollars, e.g. 8.5
   soldOut: boolean
-  story: string          // Odette's reason for making it (her voice)
+  story: string          // Amélie's reason for making it (her voice)
   tags?: string[]        // e.g. ['anniversary','celebration','everyday']
   imageHint?: string     // short description UI can use for a placeholder block
 }
 
-export type AvailabilityResult = { available: boolean; note: string } // note is in Odette's voice
-export type Recommendation   = { item: Product; inOdettesVoice: string }  // inOdettesVoice is COMPUTED, not printed on the page
+export type AvailabilityResult = { available: boolean; note: string } // note is in Amélie's voice
+export type Recommendation   = { item: Product; inAméliesVoice: string }  // inAméliesVoice is COMPUTED, not printed on the page
 
 export type OrderInput = {
   items: { id: string; qty: number }[]
@@ -29,8 +29,8 @@ export type OrderInput = {
 export type OrderConfirmation = {
   orderId: string
   status: 'confirmed'
-  summary: string            // in Odette's voice
-  keptFromAggregator: number // the ~30% Odette did NOT lose — used in the contrast beat
+  summary: string            // in Amélie's voice
+  keptFromAggregator: number // the ~30% Amélie did NOT lose — used in the contrast beat
 }
 ```
 

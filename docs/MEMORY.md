@@ -6,9 +6,9 @@
 
 ## Locked decisions
 - Project: **Storefront** — a WebMCP-native bakery site that lets a customer's agent transact directly with the shop (keeping the margin and the customer relationship the aggregators steal).
-- Protagonist: **Odette** (a common French grandmother), owner of **Chez Odette** bakehouse. Thesis: *the soul survives the agent.*
+- Protagonist: **Amélie** (a common French grandmother), owner of **Chez Amélie** bakehouse. Thesis: *the soul survives the agent.*
 - Brand/design LOCKED (see DESIGN.md): warm-cream editorial French-patisserie look derived from the maker's reference (Mille-feuille) but on our OWN identity — no cloning the real brand's name/logo/founders/awards. Rustic bread kept (country sourdough, weekend walnut levain sold-out contrast). Palette: paper #FBF3E9, ink #2A1E16, body #6F6156, terracotta #C15F3C, blush #F7DBC9. Type: Fraunces (display) + Inter (body) + a script wordmark. Single warm light theme.
-- Real proof: no real business — building a flagship demo shop; authenticity comes from craft + real complaint research + Odette's voice.
+- Real proof: no real business — building a flagship demo shop; authenticity comes from craft + real complaint research + Amélie's voice.
 - Vertical: bakery / food maker.
 - Checkout: **simulated / mock** (no real payments — hard safety line).
 - Stack: **Next.js (App Router) + TypeScript + Tailwind, deployed on Vercel.**
@@ -32,7 +32,7 @@
 ## Critique + fixes (impeccable /critique, baseline 24/32 Good)
 - Ran /critique (dual-agent): detector clean; design 24/32 (heuristics 7,10 n/a). Snapshot in `.impeccable/critique/`.
 - Applied plan (clarify → harden → quick-wins → document → polish):
-  - CLARIFY: Hero + CtaBlock rewritten in Odette's first-person voice (killed agency-voice hero); ForEveryMoment eyebrow "Untuk setiap momen" → "For every moment"; currency `$` → `€` (ProductCard + OrderConfirmation); Hero secondary CTA no longer dead-ends (now → #story).
+  - CLARIFY: Hero + CtaBlock rewritten in Amélie's first-person voice (killed agency-voice hero); ForEveryMoment eyebrow "Untuk setiap momen" → "For every moment"; currency `$` → `€` (ProductCard + OrderConfirmation); Hero secondary CTA no longer dead-ends (now → #story).
   - HARDEN: "Add to order" (instant irreversible, dup-order bug) → "Order this" opens a confirm DIALOG in TodaysBake (name [validated] + pickup + qty) before placeOrder; kills silent duplicates; fires same storefront:order event.
   - QUICK WIN: "Anniversaries" moment card image croissant.jpg → walnut.jpg.
   - DOCUMENT: docs/DESIGN.md regenerated from shipped brick/sage/cream code (was stale terracotta).
@@ -58,25 +58,25 @@
 - [x] Stage 2 research — done (above).
 - [x] Stage 4 planning files — drafted (VISION, PRD, DESIGN, ARCHITECTURE, RULES, PHASES, MEMORY).
 - [x] PLAN: **solo build by the lead** (full ownership — UI + backend + WebMCP). Teammate = cold fallback via GitHub repo (https://github.com/JaiadityaS/chez-odette) only if the lead runs out of compute. SPLIT.md/HANDOFF.md parallel-split is now obsolete.
-- [x] Design tokens LOCKED (see DESIGN.md): Chez Odette, warm French-patisserie palette, Fraunces + Inter + script.
+- [x] Design tokens LOCKED (see DESIGN.md): Chez Amélie, warm French-patisserie palette, Fraunces + Inter + script.
 - [x] GitHub repo created + seeded + pushed (public, MIT license). `probWebMCP.txt` gitignored.
 - [x] **Phase 0 done:** Next.js 16 + React 19 + Tailwind **v4** + TS, App Router, `src/` dir, `@/*` alias. `npm run build` passes clean. Stubs preserved at `src/lib/`.
   - Tailwind v4 note: no `tailwind.config.js` — design tokens go in `src/app/globals.css` via `@theme` / CSS vars.
 - [~] Phase 1 — WebMCP pipe CODE DONE (build passes): `src/lib/webmcp.ts` (feature-detect helper, checks document.modelContext AND navigator.modelContext), `src/lib/tools.ts` (`ping` tool), `src/components/StorefrontTools.tsx` (registers on mount, renders null), `src/components/ToolHarness.tsx` (dev/`?harness=1` manual tester), mounted in `layout.tsx`. Fonts wired: Fraunces/Inter/Kaushan_Script.
   - ASSUMPTION to verify live: tool result shape is `{ content: [{ type:'text', text }] }` and the global is `document.modelContext.registerTool`. Confirm/adjust after the ChatGPT in-app browser test.
   - **DEPLOYED:** https://chez-odette-tau.vercel.app/ (auto-deploys on push to main). Live tab title confirms our layout shipped.
-  - ✅ Tool execute logic VERIFIED on live build via `?harness=1` → ping returned `{content:[{type:text,text:"pong from Chez Odette — the ovens are warm."}]}`. So the result-shape assumption holds for our own runtime.
+  - ✅ Tool execute logic VERIFIED on live build via `?harness=1` → ping returned `{content:[{type:text,text:"pong from Chez Amélie — the ovens are warm."}]}`. So the result-shape assumption holds for our own runtime.
   - ✅ **VERIFIED with a real agent** in ChatGPT's in-app browser — `ping` discovered + called successfully. `document.modelContext.registerTool` + `{content:[{type:text}]}` result shape are CORRECT. Cleared to build real tools.
-- [x] **Phase 2 done (UI storefront):** built + verified locally (screenshots). globals.css has Chez Odette tokens (Tailwind v4 @theme). Components in `src/components/ui/`: Header, Hero (blush stripes), FeatureBar, Story, TodaysBake+ProductCard (sold-out state distinct), OrderConfirmation, Footer, BreadMark. `page.tsx` = framed cream panel. Renders on-brand (matches the reference).
+- [x] **Phase 2 done (UI storefront):** built + verified locally (screenshots). globals.css has Chez Amélie tokens (Tailwind v4 @theme). Components in `src/components/ui/`: Header, Hero (blush stripes), FeatureBar, Story, TodaysBake+ProductCard (sold-out state distinct), OrderConfirmation, Footer, BreadMark. `page.tsx` = framed cream panel. Renders on-brand (matches the reference).
   - ✅ UI-4 verified: clicking "Add to order" dispatches `storefront:order` → confirmation panel shows. Same event the WebMCP `place_order` tool will fire. Agent-action → human-UI proven.
-  - NOTE: product/story copy is still PLACEHOLDER (from stubs) — real Odette content lands in Phase 3.
-- [x] **Phase 3 done (real content + soul tools):** `bakery.ts` has Odette's real 6-item menu (walnut levain genuinely sold out), real story, real placeOrder (computes `keptFromAggregator` ~30%). `voice.ts` `recommendForOccasion` is genuinely computed — occasion keywords → tags, guest count, nut-allergy, and a SOLD-OUT FALLBACK (won't recommend a gone loaf; says so, offers best available). Soul tools registered in `tools.ts`: `get_todays_bake`, `the_story`, `recommend_for_occasion` (+ ping). Build passes; page shows real content (verified via page text).
+  - NOTE: product/story copy is still PLACEHOLDER (from stubs) — real Amélie content lands in Phase 3.
+- [x] **Phase 3 done (real content + soul tools):** `bakery.ts` has Amélie's real 6-item menu (walnut levain genuinely sold out), real story, real placeOrder (computes `keptFromAggregator` ~30%). `voice.ts` `recommendForOccasion` is genuinely computed — occasion keywords → tags, guest count, nut-allergy, and a SOLD-OUT FALLBACK (won't recommend a gone loaf; says so, offers best available). Soul tools registered in `tools.ts`: `get_todays_bake`, `the_story`, `recommend_for_occasion` (+ ping). Build passes; page shows real content (verified via page text).
   - Nice-to-have: re-verify get_todays_bake / recommend_for_occasion with a real agent in ChatGPT browser on the deployed site.
-- [x] **Phase 4 done (transaction tools):** registered `check_availability`, `place_order`, `get_order_status`, `join_regulars`. Now 8 tools total. `place_order` dispatches `storefront:order` → confirmation shows on Odette's counter (agent-action → human-UI). placeOrder made defensive (empty input safe for harness). Build passes.
+- [x] **Phase 4 done (transaction tools):** registered `check_availability`, `place_order`, `get_order_status`, `join_regulars`. Now 8 tools total. `place_order` dispatches `storefront:order` → confirmation shows on Amélie's counter (agent-action → human-UI). placeOrder made defensive (empty input safe for harness). Build passes.
   - DEVIATION from ARCHITECTURE: no `/api/orders` route — `place_order` runs client-side and mutates the in-module ORDERS map + fires the event. Simpler, works for static deploy, no persistence across reload (fine for demo). Documented deliberately.
   - Core loop COMPLETE: agent can discover → recommend → check availability → order (shows on UI) → status → join regulars, all direct.
   - TODO live-verify with a real agent: "order me a country sourdough for Saturday pickup, name Alex" → confirmation appears on the site.
-- [~] Phase 5 — aggregator contrast page DONE + VERIFIED LIVE at https://chez-odette-tau.vercel.app/aggregator. Cold "DashBite", Odette = row #47, brand stripped, fee fine-print (~18% markup, $4.99 delivery, 15% service, keeps ~30%, no customer data), links back to `/`. Screenshot-confirmed.
+- [~] Phase 5 — aggregator contrast page DONE + VERIFIED LIVE at https://chez-odette-tau.vercel.app/aggregator. Cold "DashBite", Amélie = row #47, brand stripped, fee fine-print (~18% markup, $4.99 delivery, 15% service, keeps ~30%, no customer data), links back to `/`. Screenshot-confirmed.
   - REMAINING in Phase 5: capture the blind-vision-vs-WebMCP two-door contrast (do together at record time — drive a vision-only agent vs the WebMCP agent; keep it honest).
 - [ ] Then 6 (polish) → 7 (ship: README with registerTool snippet, demo video, Devpost text).
 

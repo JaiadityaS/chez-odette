@@ -13,7 +13,7 @@ export default function Hero() {
         <div className="grid gap-x-10 gap-y-6 pt-10 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">
             <h1 className="text-6xl font-black leading-[0.92] md:text-8xl">
-              Come in — the bread&rsquo;s still warm
+              Come in, the bread&rsquo;s still warm
             </h1>
             <p lang="fr" className="mt-4 font-display text-2xl italic text-brick md:text-3xl">
               « Entrez, le pain est encore chaud. »
@@ -21,9 +21,9 @@ export default function Hero() {
           </div>
           <div className="md:col-span-4 md:pb-2">
             <p className="text-[16px] leading-relaxed text-body">
-              I&rsquo;m Odette. I&rsquo;ve baked here since 1974, from a starter older than
-              the building. Order straight from me — from my hands to yours, with no
-              middleman taking a cut.
+              I&rsquo;m Amélie. I&rsquo;ve baked here since 1974, from a starter that&rsquo;s
+              older than the building. Order straight from me and nobody takes a cut in
+              between.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               <a
@@ -36,7 +36,7 @@ export default function Hero() {
                 href="#story"
                 className="rounded-btn border border-ink/25 px-5 py-2.5 text-ink hover:border-ink transition-colors"
               >
-                Odette&rsquo;s story
+                Amélie&rsquo;s story
               </a>
             </div>
           </div>
@@ -48,7 +48,7 @@ export default function Hero() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/table.jpg"
-              alt="A warm table of Chez Odette bread and bakes, shared by hand"
+              alt="A warm table of Chez Amélie bread and bakes, shared by hand"
               className="h-[420px] w-full object-cover md:h-[560px]"
             />
             <div className="absolute bottom-5 right-5" aria-hidden="true">
@@ -76,7 +76,7 @@ export default function Hero() {
             </div>
           </div>
           <figcaption lang="fr" className="masthead mt-2 text-[11px] text-faint">
-            La table du matin — this morning&rsquo;s table.
+            La table du matin. This morning&rsquo;s table.
           </figcaption>
         </figure>
       </div>

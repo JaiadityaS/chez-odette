@@ -1,7 +1,7 @@
 const POINTS = [
-  { value: "≈30%", label: "the cut a marketplace skims off every order — here, Odette keeps it." },
-  { value: "Your name", label: "stays with Odette, never sold to an app or an algorithm." },
-  { value: "The whole story", label: "every loaf still comes from her hands, with its reason to exist." },
+  { value: "≈30%", label: "is what a marketplace skims off every order. Amélie keeps it instead." },
+  { value: "Your name", label: "stays with Amélie. It never gets sold to an app or an algorithm." },
+  { value: "The whole story", label: "comes with every loaf, because Amélie can tell you why she made it." },
 ];
 
 export default function WhyDirect() {
@@ -15,9 +15,9 @@ export default function WhyDirect() {
             </p>
             <h2 className="mt-3 text-4xl text-white md:text-5xl">When you buy here, it stays here</h2>
             <p className="mt-4 max-w-sm text-[16px] leading-relaxed text-white/80">
-              Nothing is lost to a middleman — not the price, not the relationship, not the
-              story. Whether you tap the button or your assistant does it for you, it still
-              comes from her hands to yours.
+              Buy straight from Amélie and the money stays with her, the way it should. It
+              works the same whether you tap the button yourself or your assistant does it
+              for you.
             </p>
           </div>
 

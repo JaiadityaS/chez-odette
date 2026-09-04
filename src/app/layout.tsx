@@ -26,9 +26,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Chez Odette — neighbourhood French bakery",
+  title: "Chez Amélie, a neighbourhood French bakery",
   description:
-    "Bread with a memory. Order Odette's country sourdough and weekend walnut levain — direct from the bakehouse.",
+    "Order Amélie's country sourdough and weekend walnut levain straight from the bakehouse.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -39,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         {children}
-        {/* Registers Chez Odette's WebMCP tools (renders nothing). */}
+        {/* Registers Chez Amélie's WebMCP tools (renders nothing). */}
         <StorefrontTools />
         {/* Dev-only manual tool tester. */}
         <ToolHarness />

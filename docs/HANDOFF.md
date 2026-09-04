@@ -24,8 +24,8 @@ Scaffold + configs + Vercel deploy, `src/lib/bakery.ts`, `src/lib/voice.ts`, `sr
 
 **4. Build in these phases, one at a time, stopping at each "done when":**
 - **Phase 0 — Foundation:** `create-next-app` (App Router, TS, Tailwind), wire Fraunces + Inter via `next/font`, create `src/app/layout.tsx` mounting `<StorefrontTools/>` + `<ToolHarness/>`, keep the existing `src/lib/*` stubs, add a minimal placeholder `page.tsx` (the teammate replaces it later). Push to GitHub, deploy to Vercel. **Done when:** a live Vercel URL loads.
-- **Phase 1 — Prove the WebMCP pipe:** in `StorefrontTools.tsx`, feature-detect `document.modelContext?.registerTool` and register ONE trivial tool `ping` → returns `"pong from Odette's"`. Add the manual `ToolHarness`. **Done when:** in ChatGPT's in-app browser (or Chrome with `chrome://flags/#enable-webmcp-testing`), an agent discovers and calls `ping`. Do this BEFORE building real tools.
-- **Phase 3 (yours) — Soul + real content:** fill `src/lib/bakery.ts` and `src/lib/voice.ts` with Odette's real menu, story, a genuine live sold-out item, and a genuinely COMPUTED `recommendForOccasion`. Register `get_todays_bake`, `the_story`, `recommend_for_occasion` in `tools.ts`/`StorefrontTools.tsx`.
+- **Phase 1 — Prove the WebMCP pipe:** in `StorefrontTools.tsx`, feature-detect `document.modelContext?.registerTool` and register ONE trivial tool `ping` → returns `"pong from Amélie's"`. Add the manual `ToolHarness`. **Done when:** in ChatGPT's in-app browser (or Chrome with `chrome://flags/#enable-webmcp-testing`), an agent discovers and calls `ping`. Do this BEFORE building real tools.
+- **Phase 3 (yours) — Soul + real content:** fill `src/lib/bakery.ts` and `src/lib/voice.ts` with Amélie's real menu, story, a genuine live sold-out item, and a genuinely COMPUTED `recommendForOccasion`. Register `get_todays_bake`, `the_story`, `recommend_for_occasion` in `tools.ts`/`StorefrontTools.tsx`.
 - **Phase 4 (yours) — Transaction:** `check_availability`, `place_order` (via `src/app/api/orders/route.ts` + `src/lib/orders.ts`, mock confirmation), `get_order_status`. On order, dispatch `window.dispatchEvent(new CustomEvent('storefront:order', { detail: confirmation }))` so the teammate's UI can show it. **Done when:** an agent completes a mock order end-to-end and the sold-out item is correctly refused.
 - **Phase 5 (yours) — Relationship + contrast:** `join_regulars`; build `src/app/aggregator/page.tsx` (a deliberately cold, brand-stripped "row 47, 30% fee" listing). Then help capture the blind-vision-vs-WebMCP contrast.
 - **Submission:** README (with the required `registerTool` snippet), MIT `LICENSE` (must be visible in the repo's About), Devpost description, and the <3-min video script.
@@ -34,7 +34,7 @@ Scaffold + configs + Vercel deploy, `src/lib/bakery.ts`, `src/lib/voice.ts`, `sr
 - Simulated/test-mode only — NO real payments, money, or real personal data.
 - Feature-detect WebMCP; never crash a normal browser.
 - Tools return structured, honest results/errors; never throw raw.
-- Keep everything in Odette's voice (see `docs/DESIGN.md`).
+- Keep everything in Amélie's voice (see `docs/DESIGN.md`).
 - One phase per response; explain what you changed and what to check; stop and let me verify before the next phase.
 
 **6. When you finish:** zip only the files you own (per `docs/SPLIT.md`) and hand them back for the final merge. Also share the live Vercel URL as soon as Phase 0 is up, so the UI teammate can test against it.

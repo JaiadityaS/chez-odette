@@ -8,11 +8,11 @@ export default function Testimonial() {
           </p>
           <blockquote className="md:col-span-9">
             <p className="font-display text-3xl italic leading-tight text-ink md:text-4xl">
-              &ldquo;I&rsquo;ve been coming since Odette&rsquo;s mother ran the counter. The
-              shop has grown, but the bread still tastes like home.&rdquo;
+              &ldquo;I&rsquo;ve been coming here since Amélie&rsquo;s mother ran the counter.
+              It&rsquo;s busier now, but the bread still tastes like home.&rdquo;
             </p>
             <footer className="masthead mt-5 text-[12px] text-body">
-              Amélie <span className="text-brick">★★★★★</span>
+              Margaux <span className="text-brick">★★★★★</span>
               <span className="text-faint"> · a regular for 20 years</span>
             </footer>
           </blockquote>

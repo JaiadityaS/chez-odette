@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-// The "before": Odette on a generic marketplace. Deliberately cold and
+// The "before": Amélie on a generic marketplace. Deliberately cold and
 // brand-stripped — she's row #47, her story gone, prices marked up, fees
 // stacked, indistinguishable from every other row. DashBite is fictional
 // (no real aggregator is impersonated). This is a demo contrast asset.
@@ -14,7 +14,7 @@ type Listing = {
   eta: string;
   deliveryFee: string;
   sponsored?: boolean;
-  isOdette?: boolean;
+  isAmélie?: boolean;
 };
 
 const LISTINGS: Listing[] = [
@@ -37,7 +37,7 @@ function Row({ l }: { l: Listing }) {
   return (
     <div
       className={`flex items-center gap-4 border-b border-gray-200 px-4 py-3 ${
-        l.isOdette ? "bg-teal-50/40" : "bg-white"
+        l.isAmélie ? "bg-teal-50/40" : "bg-white"
       }`}
     >
       <div className="h-16 w-16 flex-shrink-0 rounded-md bg-gray-200" />
@@ -72,13 +72,13 @@ function Row({ l }: { l: Listing }) {
 export default function AggregatorPage() {
   const odette: Listing = {
     rank: 47,
-    name: "Chez Odette",
+    name: "Chez Amélie",
     tags: "Bakery · Bread · $$",
     rating: 4.7,
     reviews: 128,
     eta: "35–50 min",
     deliveryFee: "$4.99",
-    isOdette: true,
+    isAmélie: true,
   };
 
   return (
@@ -111,7 +111,7 @@ export default function AggregatorPage() {
             <Row key={l.rank} l={l} />
           ))}
 
-          {/* the gap — Odette is buried far down the list */}
+          {/* the gap — Amélie is buried far down the list */}
           <div className="border-b border-gray-200 bg-gray-50 px-4 py-2 text-center text-[12px] text-gray-400">
             … 42 more sponsored and promoted bakeries …
           </div>
@@ -121,13 +121,13 @@ export default function AggregatorPage() {
 
         {/* what the shelf costs her */}
         <div className="mt-4 rounded-lg border border-gray-200 bg-white p-4 text-[13px] text-gray-600">
-          <div className="mb-2 font-medium text-gray-900">Chez Odette — the fine print</div>
+          <div className="mb-2 font-medium text-gray-900">Chez Amélie, the fine print</div>
           <ul className="space-y-1">
-            <li>· Menu prices <span className="font-medium text-gray-900">~18% higher</span> here to offset fees</li>
-            <li>· <span className="font-medium text-gray-900">$4.99</span> delivery + <span className="font-medium text-gray-900">15%</span> service fee at checkout</li>
-            <li>· DashBite keeps <span className="font-medium text-red-600">~30%</span> of every order — Odette keeps ~70%</li>
-            <li>· Odette never sees the customer&rsquo;s name, email, or phone</li>
-            <li>· Her story, her voice, her weekend walnut levain — none of it fits in a row</li>
+            <li>· Menu prices <span className="font-medium text-gray-900">~18% higher</span> here to cover the fees</li>
+            <li>· <span className="font-medium text-gray-900">$4.99</span> delivery plus a <span className="font-medium text-gray-900">15%</span> service fee at checkout</li>
+            <li>· DashBite keeps <span className="font-medium text-red-600">~30%</span> of every order, so Amélie only sees ~70%</li>
+            <li>· Amélie never gets the customer&rsquo;s name, email, or phone</li>
+            <li>· Her story and her weekend walnut levain don&rsquo;t fit in a row like this</li>
           </ul>
         </div>
 

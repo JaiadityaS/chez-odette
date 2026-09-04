@@ -21,7 +21,7 @@ const MOMENTS = [
   },
   {
     title: "Gifts & hampers",
-    text: "A basket of Odette’s best, wrapped by hand — never a gift card in an app.",
+    text: "A basket of Amélie’s best, wrapped up by hand. Never a gift card in an app.",
     image: "/images/hamper.jpg",
     span: "md:col-span-7",
   },
