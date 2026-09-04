@@ -27,6 +27,17 @@
 
   --color-line: #ddd0b6;       /* warm hairline */
 
+  /* Status scale (semantic, systematised) */
+  --color-alert: #a5382c;      /* red ink */
+  --color-alert-bg: #f6e5e1;
+  --color-alert-line: #e2b3a9;
+  --color-warn: #856212;       /* amber ink */
+  --color-warn-bg: #f6eed7;
+  --color-warn-line: #e3d1a1;
+  --color-ok: #3f6b46;         /* green ink */
+  --color-ok-bg: #e8f0e5;
+  --color-ok-line: #c3d5b9;
+
   --font-display: var(--font-cormorant), Georgia, serif;
   --font-masthead: var(--font-oswald), "Arial Narrow", sans-serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
@@ -125,6 +136,11 @@ h3 {
   flex: 1 1 auto;
   margin: 0 0.6rem 0.3rem;
   border-bottom: 1px dotted var(--color-faint);
+}
+
+/* Tabular figures for anything numeric on the board */
+.tnum {
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 /* Small back-office action button (the manual path) */
