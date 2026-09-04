@@ -76,7 +76,7 @@ function AlertCard({ a }: { a: Alert }) {
 
 function Kpi({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="min-w-[92px]">
+    <div className="min-w-[76px]">
       <p className="masthead text-[10px] text-olive">{label}</p>
       <p className="tnum mt-0.5 font-display text-3xl text-ink">{value}</p>
     </div>
@@ -159,7 +159,7 @@ export default function Dashboard() {
               <span className="max-w-[16rem] text-[14px] leading-snug text-body">{summary}</span>
             </div>
           </div>
-          <div className="flex gap-8">
+          <div className="flex flex-wrap gap-x-6 gap-y-3">
             <Kpi label="waiting" value={waiting} />
             <Kpi label="€ at risk" value={euros(atRisk)} />
             <Kpi label="orders open" value={openOrders} />
