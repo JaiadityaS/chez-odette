@@ -26,9 +26,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Chez Amélie, a neighbourhood French bakery",
+  title: "Chez Amélie — back of house",
   description:
-    "Order Amélie's country sourdough and weekend walnut levain straight from the bakehouse.",
+    "The bakery's back office. Amélie runs the whole shop from one board — and so can her agent, through WebMCP.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

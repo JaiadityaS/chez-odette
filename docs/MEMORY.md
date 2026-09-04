@@ -48,6 +48,14 @@
 - Hero: asymmetric front page (dateline rule; 8/4 headline+lead; captioned full-width plate). TodaysBake: featured loaf + a CARTE LIST (dot leaders, prices) — replaced the 3-col equal-card grid; ProductCard.tsx deleted. ForEveryMoment: asymmetric 7/5 figure grid, de-carded (hairline rules, no boxes). WhyDirect: left headline + figures list on wood band. Testimonial: big left pull-quote. CtaBlock: left headline + right action.
 - Palette/fonts/content/tools unchanged. Detector clean, build passes.
 
+## PIVOT — back-of-house cockpit (current direction)
+- Customer storefront was a weak WebMCP case (agent can just read the menu). Pivoted to **Amélie's back-of-house operations cockpit**. Amélie is now a YOUNG solo baker drowning in ops, not a grandmother.
+- Concept: dashboard opens in **crisis, all red** (butter out → dependent items still live, unfulfillable + overdue orders, unanswered customer messages, walnuts low). It's a **fully manual, functional dashboard** (click buttons to fix each alert) — MCP is additive, not required.
+- WebMCP value = **discover + compose + act**: the agent discovers the shop's tools at runtime and composes them to clear a crisis nobody hardcoded a flow for. Three claims: (1) hardcoding every flow/combination is a nightmare; (2) scraping can't (read-only; blind-clicking can't discover the manifest, races the live-recomputing board, mishandles transactional writes); (3) discovery — add a tool, agent uses it with zero code change.
+- Pacing: alerts recompute live; outward tool actions (`reorder_supply`, `text_customer`, `reply_to_message`) have an ~0.7–1.1s pending beat so it reads as real work, red count ticks down one by one.
+- Files: `src/lib/store.ts` (crisis seed + `deriveAlerts` + transactional actions + pub/sub), `src/lib/tools.ts` (16 tools, more than the visible buttons → discovery), `src/components/cockpit/{useCockpit,Dashboard}.tsx`, `src/app/page.tsx`. Deleted storefront `src/components/ui/*`, `bakery.ts`, `voice.ts`, `/aggregator`. Design tokens/fonts kept (Cormorant caps, Oswald, cream/ink/lamp/rose).
+- Killer demo prompt: *"Butter delivery didn't come — sort out my morning."* → agent chains get_alerts → reorder butter → 86 butter items → refund/text affected orders → reply to messages → board goes green.
+
 ## Contrast design (decided)
 - Primary demo contrast is now the **two-door**: the SAME deployed site accessed by a blind/screenshot (vision) agent vs. the WebMCP agent. Proves "the agent only succeeds because the site cooperated." Aggregator page demoted to a supporting beat.
 - To keep it HONEST (not rigged), the app needs a **true failure surface** (PRD MUST #6): a live sold-out state that's not trivially readable off the page, a computed occasion recommendation (not just printed), and no plainly-clickable checkout form. Built in Phases 3–4; captured in Phase 5.

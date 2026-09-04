@@ -1,230 +1,233 @@
-// The WebMCP tool registry. StorefrontTools registers every tool here;
-// the dev ToolHarness can invoke each one's execute() without an agent.
-//
-// Phase 1: ping (verified live with a real agent).
-// Phase 3: the SOUL tools — the ones that carry Amélie's identity through the
-// agent, not just data. See docs/PRD.md.
+// Chez Amélie's back-of-house WebMCP tools. The agent DISCOVERS these at runtime
+// and COMPOSES them to clear the morning — no bespoke flow is hardcoded.
+// Every action goes through the shared store, so the dashboard reacts live.
 
-import { type WebMCPTool, text } from './webmcp'
+import { type WebMCPTool, text } from "./webmcp";
 import {
-  getTodaysBake,
-  getStory,
-  checkAvailability,
-  placeOrder,
-  getOrderStatus,
-  joinRegulars,
-  type OrderInput,
-} from './bakery'
-import { recommendForOccasion } from './voice'
+  getState,
+  deriveAlerts,
+  itemsUsingSupply,
+  reorderSupply,
+  set86,
+  refundOrder,
+  markReady,
+  replyToMessage,
+  messageCustomer,
+  setPrice,
+  setOpen,
+} from "./store";
+
+// A believable beat for outward-facing work (contacting a supplier, sending an
+// SMS) so the agent's actions read as real labour, not an instant green-flip.
+const beat = (ms = 800) => new Promise((r) => setTimeout(r, ms));
 
 const pingTool: WebMCPTool = {
-  name: 'ping',
-  description:
-    "Health check for the Chez Amélie storefront. Returns a friendly confirmation that the bakery's WebMCP tools are reachable.",
-  inputSchema: { type: 'object', properties: {}, additionalProperties: false },
-  execute: async () => text('pong from Chez Amélie, the ovens are warm.'),
-}
+  name: "ping",
+  description: "Health check for Chez Amélie's back office. Confirms the WebMCP tools are reachable.",
+  inputSchema: { type: "object", properties: {}, additionalProperties: false },
+  execute: async () => text("pong — the back office is live."),
+};
 
-const getTodaysBakeTool: WebMCPTool = {
-  name: 'get_todays_bake',
-  description:
-    "List what Amélie baked today at Chez Amélie, with each loaf's price, live availability, and Amélie's own note on it. Use this to tell the customer what's fresh right now. Availability here is the truth; don't guess it from the page.",
-  inputSchema: { type: 'object', properties: {}, additionalProperties: false },
-  execute: async () => {
-    const items = getTodaysBake().map((p) => ({
-      id: p.id,
-      name: p.name,
-      price: p.price,
-      available: !p.soldOut,
-      tags: p.tags ?? [],
-      fromTheBaker: p.story,
-    }))
-    return text(JSON.stringify({ bakery: 'Chez Amélie', items }, null, 2))
-  },
-}
-
-const theStoryTool: WebMCPTool = {
-  name: 'the_story',
-  description:
-    "Amélie's story in her own words: who she is, the starter that's older than the building, and why buying direct matters. Use this when the customer asks about the bakery or the baker, so you can speak in her voice.",
-  inputSchema: { type: 'object', properties: {}, additionalProperties: false },
-  execute: async () => text(getStory()),
-}
-
-const recommendForOccasionTool: WebMCPTool = {
-  name: 'recommend_for_occasion',
-  description:
-    "Ask Amélie what to buy for a particular occasion. She reasons over what's actually available today (she won't recommend a sold-out loaf; she'll say so and offer the best alternative), the number of guests, and any dietary preferences. Returns her personal recommendation in her own voice.",
+// ── Read / triage ────────────────────────────────────────────────────────────
+const getAlerts: WebMCPTool = {
+  name: "get_alerts",
+  description: "The list of things needing attention right now (the red board), newest morning-crisis first. Start here to triage.",
+  inputSchema: { type: "object", properties: {}, additionalProperties: false },
+  execute: async () => text(JSON.stringify(deriveAlerts(), null, 2)),
+};
+const getSupplies: WebMCPTool = {
+  name: "get_supplies",
+  description: "Every ingredient and its live status (in / low / out) and supplier.",
+  inputSchema: { type: "object", properties: {}, additionalProperties: false },
+  execute: async () => text(JSON.stringify(getState().supplies, null, 2)),
+};
+const getMenu: WebMCPTool = {
+  name: "get_menu",
+  description: "Today's menu with prices, whether each item is currently available, and which supplies it needs.",
+  inputSchema: { type: "object", properties: {}, additionalProperties: false },
+  execute: async () => text(JSON.stringify(getState().menu, null, 2)),
+};
+const getOrders: WebMCPTool = {
+  name: "get_orders",
+  description: "Customer orders with status (new / ready / refunded), pickup time, and whether they're overdue.",
+  inputSchema: { type: "object", properties: {}, additionalProperties: false },
+  execute: async () => text(JSON.stringify(getState().orders, null, 2)),
+};
+const getMessages: WebMCPTool = {
+  name: "get_messages",
+  description: "Unanswered customer questions in the inbox.",
+  inputSchema: { type: "object", properties: {}, additionalProperties: false },
+  execute: async () => text(JSON.stringify(getState().messages, null, 2)),
+};
+const itemsUsing: WebMCPTool = {
+  name: "items_using_supply",
+  description: "Which currently-available menu items depend on a given supply. Use it to find, say, everything that needs butter.",
   inputSchema: {
-    type: 'object',
+    type: "object",
+    properties: { supplyId: { type: "string", description: 'e.g. "butter"' } },
+    required: ["supplyId"],
+    additionalProperties: false,
+  },
+  execute: async (input) => {
+    const { supplyId } = (input ?? {}) as { supplyId?: string };
+    return text(JSON.stringify(itemsUsingSupply(supplyId ?? "").map((m) => ({ id: m.id, name: m.name })), null, 2));
+  },
+};
+
+// ── Actions ───────────────────────────────────────────────────────────────────
+const reorder: WebMCPTool = {
+  name: "reorder_supply",
+  description: "Reorder an ingredient from its supplier so it's back in stock. Contacts the supplier.",
+  inputSchema: {
+    type: "object",
+    properties: { supplyId: { type: "string", description: 'e.g. "butter"' } },
+    required: ["supplyId"],
+    additionalProperties: false,
+  },
+  execute: async (input) => {
+    const { supplyId } = (input ?? {}) as { supplyId?: string };
+    await beat(1100); // contacting the supplier
+    return text(reorderSupply(supplyId ?? "", "agent"));
+  },
+};
+const mark86: WebMCPTool = {
+  name: "mark_86",
+  description: "Take an item off today's menu (86 it) — for when a supply it needs is out.",
+  inputSchema: {
+    type: "object",
+    properties: { itemId: { type: "string", description: 'menu id or name, e.g. "croissant"' } },
+    required: ["itemId"],
+    additionalProperties: false,
+  },
+  execute: async (input) => {
+    const { itemId } = (input ?? {}) as { itemId?: string };
+    return text(set86(itemId ?? "", true, "agent"));
+  },
+};
+const putBack: WebMCPTool = {
+  name: "put_back_on_menu",
+  description: "Put an item back on the menu once its supplies are restocked.",
+  inputSchema: {
+    type: "object",
+    properties: { itemId: { type: "string" } },
+    required: ["itemId"],
+    additionalProperties: false,
+  },
+  execute: async (input) => {
+    const { itemId } = (input ?? {}) as { itemId?: string };
+    return text(set86(itemId ?? "", false, "agent"));
+  },
+};
+const refund: WebMCPTool = {
+  name: "refund_order",
+  description: "Refund a customer's order (for when it can't be fulfilled). Won't double-refund.",
+  inputSchema: {
+    type: "object",
+    properties: { orderId: { type: "string", description: 'e.g. "A-118"' } },
+    required: ["orderId"],
+    additionalProperties: false,
+  },
+  execute: async (input) => {
+    const { orderId } = (input ?? {}) as { orderId?: string };
+    await beat(700);
+    return text(refundOrder(orderId ?? "", "agent"));
+  },
+};
+const ready: WebMCPTool = {
+  name: "mark_order_ready",
+  description: "Mark a customer's order ready for pickup.",
+  inputSchema: {
+    type: "object",
+    properties: { orderId: { type: "string" } },
+    required: ["orderId"],
+    additionalProperties: false,
+  },
+  execute: async (input) => {
+    const { orderId } = (input ?? {}) as { orderId?: string };
+    return text(markReady(orderId ?? "", "agent"));
+  },
+};
+const reply: WebMCPTool = {
+  name: "reply_to_message",
+  description: "Reply to a waiting customer question from the inbox. Provide the message id and your reply text.",
+  inputSchema: {
+    type: "object",
     properties: {
-      occasion: {
-        type: 'string',
-        description: 'What the bread is for, e.g. "anniversary dinner", "everyday toast", "birthday brunch".',
-      },
-      guests: { type: 'number', description: 'How many people it needs to feed.' },
-      prefs: {
-        type: 'string',
-        description: 'Optional preferences or restrictions, e.g. "no nuts".',
-      },
+      messageId: { type: "string", description: 'e.g. "m1"' },
+      text: { type: "string", description: "the reply, in Amélie's warm voice" },
     },
-    required: ['occasion', 'guests'],
+    required: ["messageId", "text"],
     additionalProperties: false,
   },
   execute: async (input) => {
-    const { occasion, guests, prefs } = (input ?? {}) as {
-      occasion?: string
-      guests?: number
-      prefs?: string
-    }
-    const rec = recommendForOccasion({
-      occasion: occasion ?? '',
-      guests: typeof guests === 'number' ? guests : 1,
-      prefs,
-    })
-    return text(
-      JSON.stringify(
-        {
-          recommendation: rec.item.name,
-          id: rec.item.id,
-          price: rec.item.price,
-          available: !rec.item.soldOut,
-          fromTheBaker: rec.inRosasVoice,
-        },
-        null,
-        2
-      )
-    )
+    const { messageId, text: body } = (input ?? {}) as { messageId?: string; text?: string };
+    await beat(700);
+    return text(replyToMessage(messageId ?? "", body ?? "", "agent"));
   },
-}
-
-const checkAvailabilityTool: WebMCPTool = {
-  name: 'check_availability',
-  description:
-    "Check whether a specific loaf is available at Chez Amélie right now. Availability changes through the day and loaves sell out, so this is the live truth, more reliable than reading the page. Pass a product id from get_todays_bake.",
+};
+const textCustomer: WebMCPTool = {
+  name: "text_customer",
+  description: "Text the customer on an order — e.g. an apology and a discount code after a refund. Provide the order id and message.",
   inputSchema: {
-    type: 'object',
+    type: "object",
     properties: {
-      productId: {
-        type: 'string',
-        description: 'The loaf id, e.g. "walnut-levain" (from get_todays_bake).',
-      },
+      orderId: { type: "string" },
+      text: { type: "string" },
     },
-    required: ['productId'],
+    required: ["orderId", "text"],
     additionalProperties: false,
   },
   execute: async (input) => {
-    const { productId } = (input ?? {}) as { productId?: string }
-    return text(JSON.stringify(checkAvailability(productId ?? '')))
+    const { orderId, text: body } = (input ?? {}) as { orderId?: string; text?: string };
+    await beat(800);
+    return text(messageCustomer(orderId ?? "", body ?? "", "agent"));
   },
-}
-
-const placeOrderTool: WebMCPTool = {
-  name: 'place_order',
-  description:
-    "Place a direct order with Amélie. She keeps the full price because there's no marketplace in between. Provide items (id + qty from get_todays_bake), pickup or delivery, when, and the customer's name (phone/email optional). Set joinRegulars to add them to Amélie's own list. Returns a confirmation and shows the order on Amélie's counter.",
+};
+// ── Discovery extras: real capabilities NOT shown as buttons on the board ──────
+const price: WebMCPTool = {
+  name: "set_price",
+  description: "Change a menu item's price (euros).",
   inputSchema: {
-    type: 'object',
-    properties: {
-      items: {
-        type: 'array',
-        description: 'The loaves to order.',
-        items: {
-          type: 'object',
-          properties: {
-            id: { type: 'string' },
-            qty: { type: 'number' },
-          },
-          required: ['id', 'qty'],
-          additionalProperties: false,
-        },
-      },
-      fulfillment: { type: 'string', enum: ['pickup', 'delivery'] },
-      when: { type: 'string', description: 'When they want it, e.g. "Saturday morning".' },
-      contact: {
-        type: 'object',
-        properties: {
-          name: { type: 'string' },
-          phone: { type: 'string' },
-          email: { type: 'string' },
-        },
-        required: ['name'],
-        additionalProperties: false,
-      },
-      joinRegulars: {
-        type: 'boolean',
-        description: "Add the customer to Amélie's own regulars list.",
-      },
-    },
-    required: ['items', 'fulfillment', 'when', 'contact'],
+    type: "object",
+    properties: { itemId: { type: "string" }, price: { type: "number" } },
+    required: ["itemId", "price"],
     additionalProperties: false,
   },
   execute: async (input) => {
-    const order = (input ?? {}) as OrderInput
-    const confirmation = placeOrder(order)
-
-    // Show the order on Amélie's counter (the human UI) — the same event the
-    // human "Add to order" button fires. This is the agent-action -> human-UI moment.
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(
-        new CustomEvent('storefront:order', { detail: confirmation })
-      )
-    }
-
-    let joined: string | undefined
-    if (order.joinRegulars && order.contact?.name) {
-      joined = joinRegulars(order.contact).message
-    }
-
-    return text(JSON.stringify({ ...confirmation, joined }, null, 2))
+    const { itemId, price: p } = (input ?? {}) as { itemId?: string; price?: number };
+    return text(setPrice(itemId ?? "", typeof p === "number" ? p : 0, "agent"));
   },
-}
-
-const getOrderStatusTool: WebMCPTool = {
-  name: 'get_order_status',
-  description:
-    'Check the status of an order the customer already placed. Pass the order id (e.g. "ODT-XXXXX").',
+};
+const openTool: WebMCPTool = {
+  name: "set_shop_open",
+  description: "Open or close the shop for the day.",
   inputSchema: {
-    type: 'object',
-    properties: { orderId: { type: 'string' } },
-    required: ['orderId'],
+    type: "object",
+    properties: { open: { type: "boolean" } },
+    required: ["open"],
     additionalProperties: false,
   },
   execute: async (input) => {
-    const { orderId } = (input ?? {}) as { orderId?: string }
-    return text(JSON.stringify(getOrderStatus(orderId ?? '')))
+    const { open } = (input ?? {}) as { open?: boolean };
+    return text(setOpen(Boolean(open), "agent"));
   },
-}
-
-const joinRegularsTool: WebMCPTool = {
-  name: 'join_regulars',
-  description:
-    "Add the customer to Amélie's own regulars list, so she can tell them herself when a loaf like the walnut levain comes out, instead of them hearing it from an app. Provide the customer's name (phone/email optional).",
-  inputSchema: {
-    type: 'object',
-    properties: {
-      name: { type: 'string' },
-      phone: { type: 'string' },
-      email: { type: 'string' },
-    },
-    required: ['name'],
-    additionalProperties: false,
-  },
-  execute: async (input) => {
-    const c = (input ?? {}) as { name?: string; phone?: string; email?: string }
-    return text(
-      JSON.stringify(joinRegulars({ name: c.name ?? 'friend', phone: c.phone, email: c.email }))
-    )
-  },
-}
+};
 
 export const tools: WebMCPTool[] = [
   pingTool,
-  getTodaysBakeTool,
-  theStoryTool,
-  recommendForOccasionTool,
-  checkAvailabilityTool,
-  placeOrderTool,
-  getOrderStatusTool,
-  joinRegularsTool,
-]
+  getAlerts,
+  getSupplies,
+  getMenu,
+  getOrders,
+  getMessages,
+  itemsUsing,
+  reorder,
+  mark86,
+  putBack,
+  refund,
+  ready,
+  reply,
+  textCustomer,
+  price,
+  openTool,
+];
