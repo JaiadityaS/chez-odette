@@ -1,0 +1,266 @@
+================================================================================
+CHEZ AMÉLIE — DEMO FILMING & NARRATION BRIEF
+Everything you need to shoot the <3-minute WebMCP Challenge video.
+Written for someone with ZERO prior context. Read top to bottom once.
+================================================================================
+
+Live site:  https://chez-odette-tau.vercel.app/
+Repo:       https://github.com/JaiadityaS/chez-odette
+Target:     ONE public YouTube video, under 3:00, WITH audio narration.
+
+
+--------------------------------------------------------------------------------
+0) THE 30-SECOND PITCH (what we built and why it wins)
+--------------------------------------------------------------------------------
+"Chez Amélie — back of house" is the operations dashboard a solo French baker
+uses to run her shop: supplies, menu, live customer orders, and messages, all on
+one board. It works fully by hand — every fix is a normal button click.
+
+On top of that, the SAME dashboard exposes 16 WebMCP tools. An AI agent (we test
+in the ChatGPT app's in-app browser) DISCOVERS those tools at runtime and CHAINS
+them to clear a morning crisis — with no bespoke, hardcoded "fix my morning" flow
+anywhere in the code.
+
+Why this is a strong WebMCP entry (say a version of this in the video):
+  • It's ACTION, not scraping. A scraper can read the page; it cannot reorder a
+    supplier, mark an order ready, or text a customer. These are stateful writes.
+  • The board updates in REAL TIME. Alerts are derived live from state, so a
+    scraper snapshotting HTML is always stale. Fix the cause and the alert dies.
+  • DISCOVERY beats hardcoding. Two of the tools (set_price, set_shop_open) have
+    NO buttons on the screen. The agent can still find and use them — proof that
+    hardcoding an API call per feature is a nightmare, and MCP lets the agent
+    discover capabilities and compose them itself.
+
+HARD RULE for the video: this is a SIMULATED shop. No real money, no real
+payments, no real supplier. Do not imply otherwise on camera.
+
+
+--------------------------------------------------------------------------------
+1) WHAT'S ON THE SCREEN (so you can narrate it accurately)
+--------------------------------------------------------------------------------
+Left sidebar (dark): the "Chez Amélie / Back of house" mark, nav (Today, Orders,
+Menu, Inventory, Messages), an agent/manual pill, and "Brioche" the shop cat
+sprite at the bottom (it breathes, blinks, flicks its tail — that's intentional
+charm, not a bug).
+
+Main board opens IN CRISIS — lots of red. Top to bottom:
+  • KPI strip: Needs attention, Open tickets, In the queue, On the menu.
+    Numbers are in a modern typeface (Space Grotesk) on purpose — the one
+    "modern" accent against the classical serif. Everything else is sentence
+    case, no ALL CAPS anywhere. Don't "fix" that; it's a deliberate design call.
+  • "Needs attention" — the red task inbox. Each row has a pulsing red dot and a
+    one-click action button. THIS is what goes red → green during the demo.
+  • "Live orders" — a table of customer orders with status chips.
+  • Inventory / Menu / Messages panels.
+  • Activity log — every action (by you OR the agent) lands here with a little
+    animation. GREAT for the camera: it's the visible paper trail of the agent
+    working.
+
+THE EXACT OPENING CRISIS (memorize this — it's what the agent must clear):
+  RED (7):
+    1. Butter is out  (supplier: Beurre & Co)
+    2. Walnut levain still on the menu   (needs butter, which is out)
+    3. Butter croissant still on the menu (needs butter)
+    4. Chocolate tart still on the menu   (needs butter)
+    5. Can't fulfil Marc's order   A-118 (2 butter croissants)
+    6. Can't fulfil Sofia's order  A-119 (walnut levain)
+    7. Leïla's order A-114 is overdue (sourdough, was due 8:00)
+  AMBER (3):
+    8. Walnuts running low (supplier: Périgord Nuts)
+    9. Marc is waiting — "Is my croissant order still good for 8:30?"
+   10. Théo is waiting — "Any walnut bread I can grab Saturday?"
+
+So the board opens at roughly: Needs attention 10, Open tickets 3, etc.
+
+
+--------------------------------------------------------------------------------
+2) HOW ONE FIX CASCADES (the "wow" — the agent looks smart because the board is)
+--------------------------------------------------------------------------------
+The single most impressive moment: reordering butter clears SIX red alerts at
+once, because the alerts are derived, not hardcoded.
+
+  • reorder_supply("butter")  →  butter goes back In stock. That instantly kills:
+      - "Butter is out"
+      - all 3 "still on the menu" item alerts (butter no longer missing)
+      - both "can't fulfil" order alerts for Marc (A-118) and Sofia (A-119)
+    That's 6 reds gone from ONE action.
+
+  • mark_order_ready("A-114")  →  clears the last red (Leïla's overdue order).
+
+  Board is now fully out of the red. Then the ambers:
+  • reorder_supply("walnuts")     →  clears "Walnuts running low"
+  • reply_to_message("m1", ...)   →  clears "Marc is waiting"
+  • reply_to_message("m2", ...)   →  clears "Théo is waiting"
+  • (nice-to-have) mark_order_ready("A-118") and ("A-119") to tidy the queue.
+
+Result: green board. Say on camera: "One instruction. The agent read the board,
+discovered the tools, and worked the crisis in order — and every fix propagated
+live." Note: outward actions (reorder, refund, reply, text) have a deliberate
+~0.7–1.1s "doing the work" pause so it reads as real labour, not an instant flip.
+
+
+--------------------------------------------------------------------------------
+3) THE 16 WEBMCP TOOLS (for the "discovery" beat / on-screen callout)
+--------------------------------------------------------------------------------
+Registered via  document.modelContext.registerTool(...)  in the page itself.
+READ/TRIAGE:  ping · get_alerts · get_supplies · get_menu · get_orders ·
+              get_messages · items_using_supply
+ACTIONS:      reorder_supply · mark_86 · put_back_on_menu · refund_order ·
+              mark_order_ready · reply_to_message · text_customer
+DISCOVERY-ONLY (no button on the board): set_price · set_shop_open
+
+Optional kicker shot: after the board is green, in the ChatGPT chat type
+"raise the chocolate tart to 7 euros" — the agent uses set_price, a tool with NO
+UI button. That's the cleanest possible proof of runtime discovery.
+
+
+--------------------------------------------------------------------------------
+4) TEST SETUP — GET THE AGENT TALKING TO THE BOARD
+--------------------------------------------------------------------------------
+Primary runtime = the ChatGPT app's in-app browser (this is where WebMCP works).
+  a. Open ChatGPT (the app), open its in-app browser, go to:
+        https://chez-odette-tau.vercel.app/
+  b. Confirm the crisis board loads (lots of red).
+  c. In the chat, ask the agent to work the board (prompts in section 6).
+  d. The agent should call the tools; the board updates live behind/beside chat.
+
+Chrome alternative (if you film in Chrome instead): enable the flag at
+    chrome://flags/#enable-webmcp-testing
+then load the site. (ChatGPT app is the more reliable demo runtime — prefer it.)
+
+To show ChatGPT's reasoning ("what it's thinking") on camera: ask it explicitly
+to narrate — e.g. "work the board one step at a time and say what you're doing
+and why before each action." That produces visible, filmable step-by-step text.
+
+IMPORTANT REAL-TIME CAVEAT: state is in-memory PER TAB. Two separate windows do
+NOT sync. So film the board and the chat in the SAME browser view (the ChatGPT
+in-app browser handles this — the board and the chat are the same session).
+To restart the crisis for another take, just RELOAD the page (fresh seed).
+
+
+--------------------------------------------------------------------------------
+5) SHOT LIST + NARRATION SCRIPT  (target 2:30–2:50)
+--------------------------------------------------------------------------------
+Record your voice reading the VO lines (or paste them into ElevenLabs), then lay
+them over the screen recording. Keep it calm and warm — this is a baker's shop.
+
+[0:00–0:20]  COLD OPEN — the crisis
+  ON SCREEN: the red board, fresh page load. Slow pan / let the pulsing red dots
+             and the cat breathe for a beat.
+  VO: "This is Chez Amélie's back office. It's 8am, and the morning's already
+       gone wrong. The butter delivery never came. Orders she can't fulfil.
+       A customer who's been waiting. Every red thing here is real work."
+
+[0:20–0:40]  IT'S A REAL DASHBOARD FIRST
+  ON SCREEN: hover the KPIs; click into one red row's action button by HAND to
+             show a manual fix working; then reload to restore the full crisis.
+  VO: "She can run all of this by hand — it's an ordinary operations dashboard.
+       Every alert has a button. Nothing here needs AI to work."
+
+[0:40–1:00]  ENTER THE AGENT — one instruction
+  ON SCREEN: switch to the ChatGPT chat. Type the master prompt (section 6).
+  VO: "But the same board also speaks WebMCP. So instead of clicking, she just
+       tells her agent what she wants."
+  (Let the typed prompt be readable on screen.)
+
+[1:00–1:35]  DISCOVER + COMPOSE  (the core beat)
+  ON SCREEN: the agent narrates and starts calling tools. Keep BOTH the chat and
+             the board visible if you can. Watch the butter reorder fire and SIX
+             reds vanish; the activity log fills with "agent" entries.
+  VO: "The agent discovers the tools the page exposes — sixteen of them — and
+       composes them on its own. Watch: it reorders the butter, and six red
+       alerts clear at once, because the board derives its alerts live. Then it
+       marks the overdue order ready, tops up the walnuts, and answers the
+       waiting customers — in her voice."
+
+[1:35–2:00]  RED → GREEN
+  ON SCREEN: the board settling to green; the "Needs attention" count dropping to
+             zero; the activity log full of agent actions.
+  VO: "One instruction. No hardcoded 'fix my morning' button anywhere in the
+       code. The agent read the situation and worked it in order — and every fix
+       propagated across the board in real time."
+
+[2:00–2:25]  THE DISCOVERY KICKER
+  ON SCREEN: type "raise the chocolate tart to 7 euros" — agent uses set_price,
+             a tool with NO button on the screen. Show the price change land.
+  VO: "And it isn't limited to the buttons on the screen. This price control has
+       no button at all — the agent found the capability and used it. That's the
+       point of WebMCP: you don't hardcode an integration for every feature. The
+       page publishes what it can do, and the agent figures out the rest."
+
+[2:25–2:45]  CLOSE
+  ON SCREEN: the calm green board, the cat, the Chez Amélie mark.
+  VO: "A small shop, one board, and an agent that can actually run it —
+       not scrape it. Chez Amélie, back of house. Built on WebMCP."
+  (End card optional: site URL + "Simulated shop — no real payments.")
+
+
+--------------------------------------------------------------------------------
+6) PROMPTS TO TYPE INTO CHATGPT (copy-paste these)
+--------------------------------------------------------------------------------
+MASTER PROMPT (use this one for the main take):
+  "The butter delivery didn't come this morning. Work my board one step at a
+   time — say what you're doing and why before each action — until nothing's in
+   the red. Reorder what's out, take care of the orders, and reply to anyone
+   who's waiting, in a warm voice."
+
+If it stalls or you want to steer, follow-ups:
+  "Start by checking the alerts, then fix the most urgent thing first."
+  "Now handle the overdue order."
+  "Reply to the two waiting customers."
+
+DISCOVERY KICKER (after green):
+  "Raise the chocolate tart to 7 euros."     (uses set_price — no button exists)
+  or  "Actually, close the shop for the day." (uses set_shop_open — no button)
+
+
+--------------------------------------------------------------------------------
+7) IF THE AGENT MISBEHAVES ON CAMERA (fallbacks)
+--------------------------------------------------------------------------------
+• Agent does nothing / doesn't see tools: reload the page inside the ChatGPT
+  in-app browser; confirm you're on the live URL; try the prompt again. In
+  Chrome, confirm the webmcp-testing flag is on.
+• Agent refunds instead of reordering: that's still valid (refund_order exists),
+  but for the cleanest story re-run and add "prefer to reorder and fulfil rather
+  than refund" to the prompt.
+• You want a clean board again: just RELOAD — it reseeds the full crisis.
+• Manual proof shot: every red row has its own button, so you can always fix a
+  row by hand on camera if you want to show the non-AI path.
+• There's a dev-only manual tool tester at  ?harness=1  (append to the URL) if
+  you ever need to fire a specific tool by hand off-camera to reset state.
+
+
+--------------------------------------------------------------------------------
+8) RECORDING / EDITING (Windows, no extra software needed)
+--------------------------------------------------------------------------------
+• Record: press  Win + Alt + R  (Xbox Game Bar) to screen-record a window, or use
+  the Snipping Tool's record mode. OBS is optional, not required.
+• Record clean system audio + your mic, OR record silent video and add VO after.
+• Edit: CapCut (free) or Clipchamp (built into Windows) — drop the clip, lay the
+  VO on top, trim to under 3:00. Add the section-5 timings as a rough guide.
+• Keep it under 3:00 (a submission requirement). Aim 2:30–2:50.
+• Export 1080p, upload to YouTube as PUBLIC (not Unlisted — some judges' links
+  need public). Copy the link.
+
+
+--------------------------------------------------------------------------------
+9) AFTER THE VIDEO IS UP — FINISH THE SUBMISSION
+--------------------------------------------------------------------------------
+1. Send Jaiaditya the YouTube link. It needs to go into TWO placeholders:
+      README.md          (the "_add your link_" placeholder)
+      docs/DEVPOST.md    (the "_add your link_" placeholder)
+   (Jaiaditya / Claude can paste + push these in one commit.)
+2. On Devpost, submit the project:
+      • Live URL:   https://chez-odette-tau.vercel.app/
+      • Repo:       https://github.com/JaiadityaS/chez-odette  (public, MIT)
+      • Video:      the YouTube link
+      • Description: paste from docs/DEVPOST.md
+      • ADD THE TEAMMATE AS A TEAM MEMBER so any prize is shared.
+3. Double-check the repo is public and the video is public before the deadline.
+
+Do NOT commit or share probWebMCP.txt — it's private strategy and is gitignored.
+
+================================================================================
+END. If anything on the live board looks different from section 1, just reload —
+the page reseeds the exact crisis described here on every fresh load.
+================================================================================
