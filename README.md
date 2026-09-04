@@ -1,4 +1,4 @@
-# Chez Amélie — a WebMCP-native bakery
+# thinkPuff — a WebMCP native bakery
 
 A small French bakery that keeps its **soul, its margin, and its customer** even when an AI agent does the ordering.
 
