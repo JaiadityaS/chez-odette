@@ -1,149 +1,70 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────
-   Chez Amélie — design tokens (see docs/DESIGN.md)
-   French-editorial world à la The French Dispatch: warm homey cream,
-   near-black ink, dusty rose (vieux rose), warm lamp-orange glow.
-   Single warm light theme. Token-driven via Tailwind v4 @theme.
-   Note: token name `brick` now carries the LAMP-ORANGE accent (kept
-   the name so components inherit the new accent without churn).
+   Chez Amélie — back of house. Warm DARK ops theme:
+   charcoal ground, cream classical caps, a lamp-warm accent,
+   status as chips/dots. A living bakery at dawn.
    ───────────────────────────────────────────────────────────── */
 @theme {
-  --color-paper: #efe7d4;      /* warm homey cream (page bg) */
-  --color-surface: #f8f2e4;    /* warm white (cards) */
-  --color-ink: #17130d;        /* warm near-black — headings, masthead */
-  --color-body: #4b4438;       /* warm dark taupe body */
-  --color-faint: #8c836f;      /* meta, captions */
+  --color-charcoal: #141210;   /* darkest — sidebar, overlays */
+  --color-paper: #1e1b17;      /* page ground */
+  --color-surface: #272320;    /* lifted panels */
+  --color-ink: #f0e8d9;        /* primary text (cream) */
+  --color-body: #c3b8a5;       /* body text */
+  --color-faint: #948a78;      /* meta, timestamps */
+  --color-line: #39332c;       /* hairline */
 
-  --color-brick: #d5883a;      /* warm LAMP-ORANGE — buttons, prices, accent glow */
-  --color-brick-ink: #b56d26;  /* lamp hover / pressed */
+  --color-brick: #e0a25c;      /* warm lamp accent */
+  --color-brick-ink: #f0b877;  /* accent hover */
+  --color-olive: #bda469;      /* warm gold label */
+  --color-wood: #7a3a48;       /* rose */
 
-  --color-wood: #6e3440;       /* deep dusty rose (vieux rose) — bands, footer */
-  --color-olive: #8f4b59;      /* dusty rose — labels, marks */
-
-  --color-sage: #f2d9dd;       /* soft pink fill (marquee band) */
-  --color-sage-mid: #e8c2c8;   /* rose fill (CTA block) */
-  --color-sage-deep: #8f4b59;  /* dusty rose text / label */
-
-  --color-line: #ddd0b6;       /* warm hairline */
-
-  /* Status scale (semantic, systematised) */
-  --color-alert: #a5382c;      /* red ink */
-  --color-alert-bg: #f6e5e1;
-  --color-alert-line: #e2b3a9;
-  --color-warn: #856212;       /* amber ink */
-  --color-warn-bg: #f6eed7;
-  --color-warn-line: #e3d1a1;
-  --color-ok: #3f6b46;         /* green ink */
-  --color-ok-bg: #e8f0e5;
-  --color-ok-line: #c3d5b9;
+  /* status (tuned for dark) */
+  --color-alert: #ff8b76;      --color-alert-bg: #3a201b;   --color-alert-line: #572c25;
+  --color-warn: #edc06a;       --color-warn-bg: #322a17;    --color-warn-line: #4a3d20;
+  --color-ok: #93cf90;         --color-ok-bg: #1f2e1f;      --color-ok-line: #314c31;
 
   --font-display: var(--font-cormorant), Georgia, serif;
   --font-masthead: var(--font-oswald), "Arial Narrow", sans-serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
 
-  --radius-img: 14px;
-  --radius-card: 12px;
   --radius-btn: 6px;
 }
 
 html {
   background: var(--color-paper);
+  color-scheme: dark;
   accent-color: var(--color-brick);
-  scrollbar-color: var(--color-wood) var(--color-paper);
+  scrollbar-color: var(--color-line) var(--color-paper);
 }
-
 body {
   background: var(--color-paper);
   color: var(--color-body);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
-
 h1, h2, h3 {
   font-family: var(--font-display);
   color: var(--color-ink);
   font-weight: 600;
   line-height: 1.06;
 }
-/* Elegant classical display: uppercase, letterspaced (Garamond caps) */
-h1, h2 {
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-h3 {
-  line-height: 1.14;
-}
+h1, h2 { text-transform: uppercase; letter-spacing: 0.05em; }
 
-::selection {
-  background: var(--color-sage);
-  color: var(--color-ink);
-}
+::selection { background: var(--color-brick); color: var(--color-charcoal); }
+:focus-visible { outline: 2px solid var(--color-brick); outline-offset: 2px; border-radius: 3px; }
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: var(--color-paper); }
+::-webkit-scrollbar-thumb { background: var(--color-line); border-radius: 999px; border: 3px solid var(--color-paper); }
 
-/* Condensed newspaper masthead / label voice */
 .masthead {
   font-family: var(--font-masthead);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-weight: 500;
 }
+.tnum { font-variant-numeric: tabular-nums lining-nums; }
 
-/* Small-caps section label */
-.eyebrow {
-  font-family: var(--font-masthead);
-  font-size: 13px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-olive);
-  font-weight: 500;
-}
-.eyebrow .en {
-  color: var(--color-faint);
-}
-
-/* Browser surfaces — themed from the palette, not defaults */
-:focus-visible {
-  outline: 2px solid var(--color-brick);
-  outline-offset: 2px;
-  border-radius: 3px;
-}
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-paper);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-wood);
-  border-radius: 999px;
-  border: 3px solid var(--color-paper);
-}
-
-/* Editorial drop cap for a lead paragraph */
-.dropcap::first-letter {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 3.6em;
-  line-height: 0.72;
-  float: left;
-  margin: 0.06em 0.12em 0 0;
-  color: var(--color-brick);
-}
-
-/* Dot leader between a name and its price, menu-style */
-.leader {
-  flex: 1 1 auto;
-  margin: 0 0.6rem 0.3rem;
-  border-bottom: 1px dotted var(--color-faint);
-}
-
-/* Tabular figures for anything numeric on the board */
-.tnum {
-  font-variant-numeric: tabular-nums lining-nums;
-}
-
-/* Small back-office action button (the manual path) */
 .cockpit-btn {
   border: 1px solid var(--color-line);
   border-radius: var(--radius-btn);
@@ -153,45 +74,47 @@ h3 {
   color: var(--color-ink);
   background: transparent;
   cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
-.cockpit-btn:hover {
-  border-color: var(--color-ink);
-  background: rgba(23, 19, 13, 0.04);
-}
+.cockpit-btn:hover { border-color: var(--color-brick); color: var(--color-brick); }
 
-/* Hover lift for cards (user-initiated state) */
-.lift {
-  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
-}
-.lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 34px rgba(23, 19, 13, 0.16);
-}
+/* ── Living bakery: ambient + functional motion (reduced-motion safe) ── */
+.mote,
+.steam-wisp,
+.pulse-soft,
+.oven-glow,
+.log-in { will-change: transform, opacity; }
 
-/* Awning stripe — wood-green + cream, a homey bakery signature */
-.awning {
-  height: 10px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--color-wood) 0 18px,
-    var(--color-surface) 18px 36px
-  );
-}
-
-/* Lively motion, gated to users who accept it */
 @media (prefers-reduced-motion: no-preference) {
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+  @keyframes floatUp {
+    0% { transform: translateY(10px); opacity: 0; }
+    12% { opacity: var(--o, 0.5); }
+    100% { transform: translateY(-140px); opacity: 0; }
   }
-  .marquee-track {
-    animation: marquee 34s linear infinite;
+  .mote { animation: floatUp var(--dur, 14s) linear infinite; animation-delay: var(--delay, 0s); }
+
+  @keyframes steamRise {
+    0% { transform: translateY(2px) scaleX(0.9); opacity: 0; }
+    35% { opacity: 0.5; }
+    100% { transform: translateY(-12px) scaleX(1.4); opacity: 0; }
   }
-  @keyframes stamp-spin {
-    to { transform: rotate(360deg); }
+  .steam-wisp { animation: steamRise 2.8s ease-out infinite; }
+
+  @keyframes pulseSoft {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.78); }
   }
-  .stamp-spin {
-    animation: stamp-spin 28s linear infinite;
+  .pulse-soft { animation: pulseSoft 1.9s ease-in-out infinite; }
+
+  @keyframes ovenGlow {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 0.8; }
   }
+  .oven-glow { animation: ovenGlow 7s ease-in-out infinite; }
+
+  @keyframes logIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: none; }
+  }
+  .log-in { animation: logIn 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
 }
